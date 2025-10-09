@@ -1,0 +1,13 @@
+{
+  "name": "backend",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts"
+  },
+  "dependencies": {
+    "hono": "^4.9.10"
+  },
+  "devDependencies": {
+    "@hono/eslint-config": "^2.0.3",
+    "@types/bun": "latest"
+  }
+}

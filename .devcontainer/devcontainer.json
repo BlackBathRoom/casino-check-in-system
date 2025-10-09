@@ -1,0 +1,29 @@
+{
+  "name": "Casino Check-In System Dev",
+  "dockerComposeFile": ["./docker-compose.yml"],
+  "service": "app-dev",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "bun",
+  "mounts": [
+    {
+      "type": "volume",
+      "target": "${containerWorkspaceFolder}/node_modules"
+    }
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.renderWhitespace": "all"
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  },
+  "postAttachCommand": "sudo chown -R bun:bun /workspace /workspace/node_modules && bun install",
+  "forwardPorts": [3000, 3157]
+}
