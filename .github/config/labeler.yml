@@ -1,0 +1,17 @@
+frontend:
+  - changed-files:
+      - any-glob-to-any-file: ['app/frontend/**']
+backend:
+  - changed-files:
+      - any-glob-to-any-file: ['app/backend/**']
+
+enhancement:
+  - head-branch: ['^feature']
+bug:
+  - head-branch: ['^fix', '^bugfix']
+chore:
+  - head-branch: ['^chore']
+documentation:
+  - head-branch: ['^doc']
+release:
+  - head-branch: ['^release']
