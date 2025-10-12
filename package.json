@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "dev:front": "cd app/frontend && bun run dev",
-    "dev:back": "cd app/backend && bun run dev"
+    "dev:back": "cd app/backend && bun run dev",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "eslint": "^9.37.0",
