@@ -5,6 +5,7 @@
       "name": "sample-app",
       "devDependencies": {
         "eslint": "^9.37.0",
+        "eslint-config-prettier": "^10.1.8",
         "prettier": "^3.6.2",
       },
     },
