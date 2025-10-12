@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "lint": "eslint ./src",
-    "format": "prettier --write ./src && eslint --fix ./src"
+    "format": "prettier --write ./src",
+    "check": "prettier --write ./src && eslint --fix ./src"
   },
   "dependencies": {
     "hono": "^4.9.10"
