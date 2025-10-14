@@ -34,7 +34,11 @@
     ".vscode-insiders"
   ],
   "extensions.ignoreRecommendations": false,
-  "cSpell.words": ["daisyui", "prefersdark"],
+  "cSpell.words": [
+    "checkin",
+    "daisyui",
+    "prefersdark"
+  ],
   "files.watcherExclude": {
     "**/routeTree.gen.ts": true
   },

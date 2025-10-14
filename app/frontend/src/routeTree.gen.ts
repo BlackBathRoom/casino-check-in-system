@@ -8,49 +8,92 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { createFileRoute } from '@tanstack/react-router'
 
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as CheckinRouteRouteImport } from './routes/checkin/route'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as IndexRouteImport } from './routes/index'
+
+const CheckinIndexLazyRouteImport = createFileRoute('/checkin/')()
+const AdminIndexLazyRouteImport = createFileRoute('/admin/')()
+
+const CheckinRouteRoute = CheckinRouteRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const CheckinIndexLazyRoute = CheckinIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CheckinRouteRoute,
+} as any).lazy(() => import('./routes/checkin/index.lazy').then((d) => d.Route))
+const AdminIndexLazyRoute = AdminIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any).lazy(() => import('./routes/admin/index.lazy').then((d) => d.Route))
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/checkin': typeof CheckinRouteRouteWithChildren
+  '/admin/': typeof AdminIndexLazyRoute
+  '/checkin/': typeof CheckinIndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/admin': typeof AdminIndexLazyRoute
+  '/checkin': typeof CheckinIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/checkin': typeof CheckinRouteRouteWithChildren
+  '/admin/': typeof AdminIndexLazyRoute
+  '/checkin/': typeof CheckinIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/tanstack-query'
+  fullPaths: '/' | '/admin' | '/checkin' | '/admin/' | '/checkin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/demo/tanstack-query'
+  to: '/' | '/admin' | '/checkin'
+  id: '__root__' | '/' | '/admin' | '/checkin' | '/admin/' | '/checkin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  CheckinRouteRoute: typeof CheckinRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/checkin': {
+      id: '/checkin'
+      path: '/checkin'
+      fullPath: '/checkin'
+      preLoaderRoute: typeof CheckinRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -58,19 +101,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
+    '/checkin/': {
+      id: '/checkin/'
+      path: '/'
+      fullPath: '/checkin/'
+      preLoaderRoute: typeof CheckinIndexLazyRouteImport
+      parentRoute: typeof CheckinRouteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexLazyRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminIndexLazyRoute: typeof AdminIndexLazyRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminIndexLazyRoute: AdminIndexLazyRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+interface CheckinRouteRouteChildren {
+  CheckinIndexLazyRoute: typeof CheckinIndexLazyRoute
+}
+
+const CheckinRouteRouteChildren: CheckinRouteRouteChildren = {
+  CheckinIndexLazyRoute: CheckinIndexLazyRoute,
+}
+
+const CheckinRouteRouteWithChildren = CheckinRouteRoute._addFileChildren(
+  CheckinRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  CheckinRouteRoute: CheckinRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
