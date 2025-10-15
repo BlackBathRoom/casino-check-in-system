@@ -1,6 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=BBH+Sans+Hegarty&display=swap');
 @import 'tailwindcss';
 @plugin 'daisyui' {
   themes:
     emerald --default,
     coffee -prefersdark;
+}
+
+@layer utilities {
+  .font-bbh {
+    font-family: 'BBH Sans Hegarty', sans-serif;
+  }
 }

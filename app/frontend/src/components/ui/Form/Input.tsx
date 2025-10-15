@@ -1,6 +1,7 @@
 import { cn } from '@/utils/cn';
 
 export type Props<T> = {
+  type?: 'text' | 'number';
   value: T;
   setValue: (value: string) => void;
   id?: string;
@@ -8,18 +9,21 @@ export type Props<T> = {
   max?: number;
   minLength?: number;
   maxLength?: number;
+  placeholder?: string;
   errorMessage?: string;
   isRequired?: boolean;
   className?: string;
 };
 
 const Input = <T extends string | number>({
+  type,
   value,
   setValue,
   min = undefined,
   max = undefined,
   minLength = undefined,
   maxLength = undefined,
+  placeholder = '',
   errorMessage = '',
   isRequired = false,
   className = '',
@@ -28,7 +32,7 @@ const Input = <T extends string | number>({
   return (
     <div className="flex flex-col gap-1">
       <input
-        type={typeof value === 'number' ? 'number' : 'text'}
+        type={type && (typeof value === 'number' ? 'number' : 'text')}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         id={id}
@@ -36,6 +40,7 @@ const Input = <T extends string | number>({
         max={max}
         minLength={minLength}
         maxLength={maxLength}
+        placeholder={placeholder}
         className={cn('validator input', className)}
         required={isRequired}
         title={errorMessage}

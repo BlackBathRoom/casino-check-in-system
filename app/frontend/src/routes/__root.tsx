@@ -35,7 +35,9 @@ function Layout() {
   return (
     <div className="flex flex-col h-dvh">
       <Header />
-      <Outlet />
+      <div className="flex-1 flex items-center justify-center px-3 py-5">
+        <Outlet />
+      </div>
     </div>
   );
 }

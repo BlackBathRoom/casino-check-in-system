@@ -6,11 +6,12 @@ const toDate = (dt: Datetime) =>
 
 const getElapsed = (start: Date) => {
   const diffMs = Math.max(0, Date.now() - start.getTime());
-  const totalMinutes = Math.floor(diffMs / 60_000);
+  const totalSeconds = Math.floor(diffMs / 1_000);
 
   return {
-    hours: Math.floor(totalMinutes / 60),
-    minutes: totalMinutes % 60,
+    hours: Math.floor(totalSeconds / 3_600),
+    minutes: Math.floor((totalSeconds % 3_600) / 60),
+    seconds: totalSeconds % 60,
   };
 };
 
@@ -46,8 +47,14 @@ const Timer: React.FC<Props> = ({ datetime, isRunning, className }) => {
 
   const hoursLabel = elapsed.hours.toString().padStart(2, '0');
   const minutesLabel = elapsed.minutes.toString().padStart(2, '0');
+  const secondsLabel = elapsed.seconds.toString().padStart(2, '0');
 
-  return <span className={className}>{`${hoursLabel}:${minutesLabel}`}</span>;
+  const display =
+    elapsed.hours > 0
+      ? `${hoursLabel}:${minutesLabel}`
+      : `${minutesLabel}:${secondsLabel}`;
+
+  return <span className={className}>{display}</span>;
 };
 
 export default Timer;

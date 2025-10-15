@@ -77,4 +77,16 @@ export class Datetime {
       )
       .toISOString();
   }
+
+  public static now(): Datetime {
+    const dt = dayjs().tz();
+    return new Datetime(
+      dt.year(),
+      dt.month() + 1,
+      dt.date(),
+      dt.hour(),
+      dt.minute(),
+      dt.second()
+    );
+  }
 }

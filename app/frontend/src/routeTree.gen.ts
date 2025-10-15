@@ -11,13 +11,21 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as CheckinRouteRouteImport } from './routes/checkin/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UsersLoginIndexRouteImport } from './routes/users/login/index'
 
 const CheckinIndexLazyRouteImport = createFileRoute('/checkin/')()
 const AdminIndexLazyRouteImport = createFileRoute('/admin/')()
+const UsersUserIdIndexLazyRouteImport = createFileRoute('/users/$userId/')()
 
+const UsersRouteRoute = UsersRouteRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckinRouteRoute = CheckinRouteRouteImport.update({
   id: '/checkin',
   path: '/checkin',
@@ -43,43 +51,89 @@ const AdminIndexLazyRoute = AdminIndexLazyRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any).lazy(() => import('./routes/admin/index.lazy').then((d) => d.Route))
+const UsersUserIdIndexLazyRoute = UsersUserIdIndexLazyRouteImport.update({
+  id: '/$userId/',
+  path: '/$userId/',
+  getParentRoute: () => UsersRouteRoute,
+} as any).lazy(() =>
+  import('./routes/users/$userId/index.lazy').then((d) => d.Route),
+)
+const UsersLoginIndexRoute = UsersLoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => UsersRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
+  '/users': typeof UsersRouteRouteWithChildren
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
+  '/users/login': typeof UsersLoginIndexRoute
+  '/users/$userId': typeof UsersUserIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/users': typeof UsersRouteRouteWithChildren
   '/admin': typeof AdminIndexLazyRoute
   '/checkin': typeof CheckinIndexLazyRoute
+  '/users/login': typeof UsersLoginIndexRoute
+  '/users/$userId': typeof UsersUserIdIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
+  '/users': typeof UsersRouteRouteWithChildren
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
+  '/users/login/': typeof UsersLoginIndexRoute
+  '/users/$userId/': typeof UsersUserIdIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/checkin' | '/admin/' | '/checkin/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/checkin'
+    | '/users'
+    | '/admin/'
+    | '/checkin/'
+    | '/users/login'
+    | '/users/$userId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/checkin'
-  id: '__root__' | '/' | '/admin' | '/checkin' | '/admin/' | '/checkin/'
+  to: '/' | '/users' | '/admin' | '/checkin' | '/users/login' | '/users/$userId'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/checkin'
+    | '/users'
+    | '/admin/'
+    | '/checkin/'
+    | '/users/login/'
+    | '/users/$userId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   CheckinRouteRoute: typeof CheckinRouteRouteWithChildren
+  UsersRouteRoute: typeof UsersRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkin': {
       id: '/checkin'
       path: '/checkin'
@@ -115,6 +169,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexLazyRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/users/$userId/': {
+      id: '/users/$userId/'
+      path: '/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof UsersUserIdIndexLazyRouteImport
+      parentRoute: typeof UsersRouteRoute
+    }
+    '/users/login/': {
+      id: '/users/login/'
+      path: '/login'
+      fullPath: '/users/login'
+      preLoaderRoute: typeof UsersLoginIndexRouteImport
+      parentRoute: typeof UsersRouteRoute
+    }
   }
 }
 
@@ -142,10 +210,25 @@ const CheckinRouteRouteWithChildren = CheckinRouteRoute._addFileChildren(
   CheckinRouteRouteChildren,
 )
 
+interface UsersRouteRouteChildren {
+  UsersLoginIndexRoute: typeof UsersLoginIndexRoute
+  UsersUserIdIndexLazyRoute: typeof UsersUserIdIndexLazyRoute
+}
+
+const UsersRouteRouteChildren: UsersRouteRouteChildren = {
+  UsersLoginIndexRoute: UsersLoginIndexRoute,
+  UsersUserIdIndexLazyRoute: UsersUserIdIndexLazyRoute,
+}
+
+const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
+  UsersRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   CheckinRouteRoute: CheckinRouteRouteWithChildren,
+  UsersRouteRoute: UsersRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
