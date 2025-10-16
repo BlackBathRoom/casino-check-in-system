@@ -20,6 +20,9 @@ import { Route as UsersLoginIndexRouteImport } from './routes/users/login/index'
 const CheckinIndexLazyRouteImport = createFileRoute('/checkin/')()
 const AdminIndexLazyRouteImport = createFileRoute('/admin/')()
 const UsersUserIdIndexLazyRouteImport = createFileRoute('/users/$userId/')()
+const CheckinRepeatIndexLazyRouteImport = createFileRoute('/checkin/repeat/')()
+const CheckinFirstIndexLazyRouteImport = createFileRoute('/checkin/first/')()
+const CheckinUserIdIndexLazyRouteImport = createFileRoute('/checkin/$userId/')()
 
 const UsersRouteRoute = UsersRouteRouteImport.update({
   id: '/users',
@@ -58,6 +61,27 @@ const UsersUserIdIndexLazyRoute = UsersUserIdIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/users/$userId/index.lazy').then((d) => d.Route),
 )
+const CheckinRepeatIndexLazyRoute = CheckinRepeatIndexLazyRouteImport.update({
+  id: '/repeat/',
+  path: '/repeat/',
+  getParentRoute: () => CheckinRouteRoute,
+} as any).lazy(() =>
+  import('./routes/checkin/repeat/index.lazy').then((d) => d.Route),
+)
+const CheckinFirstIndexLazyRoute = CheckinFirstIndexLazyRouteImport.update({
+  id: '/first/',
+  path: '/first/',
+  getParentRoute: () => CheckinRouteRoute,
+} as any).lazy(() =>
+  import('./routes/checkin/first/index.lazy').then((d) => d.Route),
+)
+const CheckinUserIdIndexLazyRoute = CheckinUserIdIndexLazyRouteImport.update({
+  id: '/$userId/',
+  path: '/$userId/',
+  getParentRoute: () => CheckinRouteRoute,
+} as any).lazy(() =>
+  import('./routes/checkin/$userId/index.lazy').then((d) => d.Route),
+)
 const UsersLoginIndexRoute = UsersLoginIndexRouteImport.update({
   id: '/login/',
   path: '/login/',
@@ -72,6 +96,9 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
   '/users/login': typeof UsersLoginIndexRoute
+  '/checkin/$userId': typeof CheckinUserIdIndexLazyRoute
+  '/checkin/first': typeof CheckinFirstIndexLazyRoute
+  '/checkin/repeat': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId': typeof UsersUserIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
@@ -80,6 +107,9 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexLazyRoute
   '/checkin': typeof CheckinIndexLazyRoute
   '/users/login': typeof UsersLoginIndexRoute
+  '/checkin/$userId': typeof CheckinUserIdIndexLazyRoute
+  '/checkin/first': typeof CheckinFirstIndexLazyRoute
+  '/checkin/repeat': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId': typeof UsersUserIdIndexLazyRoute
 }
 export interface FileRoutesById {
@@ -91,6 +121,9 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
   '/users/login/': typeof UsersLoginIndexRoute
+  '/checkin/$userId/': typeof CheckinUserIdIndexLazyRoute
+  '/checkin/first/': typeof CheckinFirstIndexLazyRoute
+  '/checkin/repeat/': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId/': typeof UsersUserIdIndexLazyRoute
 }
 export interface FileRouteTypes {
@@ -103,9 +136,21 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/checkin/'
     | '/users/login'
+    | '/checkin/$userId'
+    | '/checkin/first'
+    | '/checkin/repeat'
     | '/users/$userId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/users' | '/admin' | '/checkin' | '/users/login' | '/users/$userId'
+  to:
+    | '/'
+    | '/users'
+    | '/admin'
+    | '/checkin'
+    | '/users/login'
+    | '/checkin/$userId'
+    | '/checkin/first'
+    | '/checkin/repeat'
+    | '/users/$userId'
   id:
     | '__root__'
     | '/'
@@ -115,6 +160,9 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/checkin/'
     | '/users/login/'
+    | '/checkin/$userId/'
+    | '/checkin/first/'
+    | '/checkin/repeat/'
     | '/users/$userId/'
   fileRoutesById: FileRoutesById
 }
@@ -176,6 +224,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUserIdIndexLazyRouteImport
       parentRoute: typeof UsersRouteRoute
     }
+    '/checkin/repeat/': {
+      id: '/checkin/repeat/'
+      path: '/repeat'
+      fullPath: '/checkin/repeat'
+      preLoaderRoute: typeof CheckinRepeatIndexLazyRouteImport
+      parentRoute: typeof CheckinRouteRoute
+    }
+    '/checkin/first/': {
+      id: '/checkin/first/'
+      path: '/first'
+      fullPath: '/checkin/first'
+      preLoaderRoute: typeof CheckinFirstIndexLazyRouteImport
+      parentRoute: typeof CheckinRouteRoute
+    }
+    '/checkin/$userId/': {
+      id: '/checkin/$userId/'
+      path: '/$userId'
+      fullPath: '/checkin/$userId'
+      preLoaderRoute: typeof CheckinUserIdIndexLazyRouteImport
+      parentRoute: typeof CheckinRouteRoute
+    }
     '/users/login/': {
       id: '/users/login/'
       path: '/login'
@@ -200,10 +269,16 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 
 interface CheckinRouteRouteChildren {
   CheckinIndexLazyRoute: typeof CheckinIndexLazyRoute
+  CheckinUserIdIndexLazyRoute: typeof CheckinUserIdIndexLazyRoute
+  CheckinFirstIndexLazyRoute: typeof CheckinFirstIndexLazyRoute
+  CheckinRepeatIndexLazyRoute: typeof CheckinRepeatIndexLazyRoute
 }
 
 const CheckinRouteRouteChildren: CheckinRouteRouteChildren = {
   CheckinIndexLazyRoute: CheckinIndexLazyRoute,
+  CheckinUserIdIndexLazyRoute: CheckinUserIdIndexLazyRoute,
+  CheckinFirstIndexLazyRoute: CheckinFirstIndexLazyRoute,
+  CheckinRepeatIndexLazyRoute: CheckinRepeatIndexLazyRoute,
 }
 
 const CheckinRouteRouteWithChildren = CheckinRouteRoute._addFileChildren(
