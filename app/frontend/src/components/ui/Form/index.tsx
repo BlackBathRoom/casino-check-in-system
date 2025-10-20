@@ -1,5 +1,6 @@
 import Input from '@/components/ui/Form/Input';
 import Label from '@/components/ui/Form/Label';
+import Radio from '@/components/ui/Form/Radio';
 import Select from '@/components/ui/Form/Select';
 import SubmitBtn from '@/components/ui/Form/SubmitBtn';
 
@@ -14,6 +15,7 @@ const Form: React.FC<Props> & {
   Label: typeof Label;
   Select: typeof Select;
   SubmitBtn: typeof SubmitBtn;
+  Radio: typeof Radio;
 } = ({ children, onSubmit, className = '' }) => {
   return (
     <form className={className} onSubmit={onSubmit}>
@@ -26,5 +28,6 @@ Form.Input = Input;
 Form.Label = Label;
 Form.Select = Select;
 Form.SubmitBtn = SubmitBtn;
+Form.Radio = Radio;
 
 export default Form;
