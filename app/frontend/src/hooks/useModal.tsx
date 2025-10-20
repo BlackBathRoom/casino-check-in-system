@@ -9,12 +9,12 @@ const isModalElement = (
   return element !== null && 'showModal' in element && 'close' in element;
 };
 
-export const useModal = (modal_id: HTMLElement['id']) => {
+export const useModal = (id: HTMLElement['id']) => {
   const modalAction = (mode: 'open' | 'close') => {
-    const modalElement = document.getElementById(modal_id);
+    const modalElement = document.getElementById(id);
     if (!isModalElement(modalElement)) {
       throw new Error(
-        `Element with id "${modal_id}" is not a valid modal element. A valid modal element should be a <dialog> element or have both "showModal" and "close" methods.`
+        `Element with id "${id}" is not a valid modal element. A valid modal element should be a <dialog> element or have both "showModal" and "close" methods.`
       );
     }
 
@@ -28,5 +28,5 @@ export const useModal = (modal_id: HTMLElement['id']) => {
   const openModal = () => modalAction('open');
   const closeModal = () => modalAction('close');
 
-  return { openModal, closeModal };
+  return { id, openModal, closeModal };
 };
