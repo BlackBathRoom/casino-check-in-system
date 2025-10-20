@@ -1,20 +1,17 @@
 {
   "name": "casino-check-in-system",
-  "private": true,
-  "workspaces": [
-    "app/*"
-  ],
-  "scripts": {
-    "dev:front": "cd app/frontend && bun run dev",
-    "dev:back": "cd app/backend && bun run dev",
-    "format": "prettier --write ."
-  },
   "devDependencies": {
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.6.2"
   },
-  "dependencies": {
-    "dayjs": "^1.11.18"
-  }
+  "private": true,
+  "scripts": {
+    "dev:front": "cd app/frontend && bun run dev",
+    "dev:back": "cd app/backend && bun run dev",
+    "format": "prettier --write ."
+  },
+  "workspaces": [
+    "app/*"
+  ]
 }
