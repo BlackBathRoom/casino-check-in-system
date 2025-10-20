@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const Header: React.FC = () => {
   return (
@@ -8,6 +9,7 @@ const Header: React.FC = () => {
           <h1 className="text-2xl font-bbh">THE TECH CASINO BAR</h1>
         </Link>
       </div>
+      <ThemeToggle />
     </header>
   );
 };
