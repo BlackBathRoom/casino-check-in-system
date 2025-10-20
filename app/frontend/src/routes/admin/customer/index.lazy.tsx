@@ -36,6 +36,7 @@ const users: Array<User> = [
     time: Datetime.now(),
     fee: 3000,
     isNomihodai: true,
+    nomihodaiStartAt: Datetime.now(),
     status: true,
   },
   {
@@ -44,6 +45,7 @@ const users: Array<User> = [
     time: Datetime.now(),
     fee: 2500,
     isNomihodai: false,
+    nomihodaiStartAt: null,
     status: true,
   },
   {
@@ -52,6 +54,7 @@ const users: Array<User> = [
     time: Datetime.now(),
     fee: 4000,
     isNomihodai: true,
+    nomihodaiStartAt: Datetime.now(),
     status: false,
   },
 ];

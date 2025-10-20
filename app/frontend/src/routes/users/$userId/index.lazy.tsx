@@ -6,6 +6,7 @@ import {
   HandCoins,
   Timer as TimerIcon,
 } from 'lucide-react';
+import type { User } from '@/types';
 import { Datetime } from '@/utils/time';
 import Timer from '@/components/ui/Timer';
 import Button from '@/components/ui/Button';
@@ -15,10 +16,10 @@ export const Route = createLazyFileRoute('/users/$userId/')({
   component: RouteComponent,
 });
 
-const demoUser = {
-  userId: '1234',
+const demoUser: Omit<User, 'status'> = {
+  id: '1234',
   name: 'hogehoge',
-  startAt: Datetime.now(),
+  time: Datetime.now(),
   fee: 1000,
   isNomihodai: true,
   nomihodaiStartAt: Datetime.now(),
@@ -26,7 +27,7 @@ const demoUser = {
 
 function RouteComponent() {
   return (
-    <div className="card card-border shadow-lg w-full px-10 py-6 max-w-md md:max-w-3xl">
+    <div className="card card-border shadow-lg bg-base-100 w-full px-10 py-6 max-w-md md:max-w-3xl">
       <div className="card-title">
         <h2 className="text-3xl font-bold text-info pb-2 flex gap-1 mx-auto md:ml-0">
           <span>{demoUser.name}</span>
@@ -41,7 +42,7 @@ function RouteComponent() {
               <span className="text-lg">経過時間</span>
             </div>
             <span className="text-xl md:text-2xl font-bold">
-              <Timer datetime={demoUser.startAt} isRunning />
+              <Timer datetime={demoUser.time} isRunning />
             </span>
           </div>
           <div className="flex flex-col gap-1">
@@ -58,7 +59,7 @@ function RouteComponent() {
         <Divider direction="horizontal" />
         <div className="flex flex-col gap-2">
           <Button
-            option="soft"
+            option="outline"
             color="secondary"
             className="flex gap-1 justify-center items-center py-2"
           >
@@ -66,7 +67,7 @@ function RouteComponent() {
             <span className="text-xl md:text-2xl">ドリンク購入</span>
           </Button>
           <Button
-            option="soft"
+            option="outline"
             color="secondary"
             className="flex gap-1 justify-center items-center py-2"
           >
@@ -76,7 +77,7 @@ function RouteComponent() {
         </div>
         <Divider direction="horizontal" />
         <Button
-          option="dash"
+          option="outline"
           color="accent"
           className="flex gap-1 justify-center items-center py-2"
         >

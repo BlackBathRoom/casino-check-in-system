@@ -6,6 +6,7 @@ type User = {
   time: Datetime;
   fee: number;
   isNomihodai: boolean;
+  nomihodaiStartAt: Datetime | null;
   status: boolean;
 };
 

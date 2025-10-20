@@ -17,7 +17,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="card card-border shadow-lg px-5 py-8 w-full max-w-xl">
+    <div className="card card-border shadow-lg bg-base-100 px-5 py-8 w-full max-w-xl">
       <div className="card-title flex gap-3 justify-center">
         <LogIn className="w-10 h-10 text-info" />
         <h2 className="text-5xl font-bold text-info pb-2">Login</h2>
