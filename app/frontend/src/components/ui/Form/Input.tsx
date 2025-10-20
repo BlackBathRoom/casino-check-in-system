@@ -1,4 +1,16 @@
+import type { ClassMap, Color } from '@/types/component';
 import { cn } from '@/utils/cn';
+
+const colorMap: ClassMap<Color, 'input'> = {
+  neutral: 'input-neutral',
+  primary: 'input-primary',
+  secondary: 'input-secondary',
+  accent: 'input-accent',
+  info: 'input-info',
+  success: 'input-success',
+  warning: 'input-warning',
+  error: 'input-error',
+} as const;
 
 export type Props<T> = {
   type?: 'text' | 'number';
@@ -12,6 +24,7 @@ export type Props<T> = {
   placeholder?: string;
   errorMessage?: string;
   isRequired?: boolean;
+  color?: Color;
   className?: string;
 };
 
@@ -26,6 +39,7 @@ const Input = <T extends string | number>({
   placeholder = '',
   errorMessage = '',
   isRequired = false,
+  color = 'neutral',
   className = '',
   id,
 }: Props<T>) => {
@@ -41,7 +55,7 @@ const Input = <T extends string | number>({
         minLength={minLength}
         maxLength={maxLength}
         placeholder={placeholder}
-        className={cn('validator input', className)}
+        className={cn('validator input', colorMap[color], className)}
         required={isRequired}
         title={errorMessage}
       />

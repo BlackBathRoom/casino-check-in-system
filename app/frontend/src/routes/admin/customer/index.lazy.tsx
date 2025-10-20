@@ -413,7 +413,7 @@ function RouteComponent() {
             <div className="flex flex-col gap-3 px-5">
               <IconLabel
                 icon={category === 'drink' ? CupSoda : Coins}
-                className="px-1 text-accent"
+                className="px-1 text-primary"
               >
                 <span className="text-lg">
                   {category === 'drink' ? 'ドリンク' : 'チップ'}
@@ -423,7 +423,7 @@ function RouteComponent() {
                 {items.map((product) => (
                   <Button
                     key={product.id}
-                    color="secondary"
+                    color="info"
                     option="outline"
                     size="lg"
                     className="w-full flex justify-between px-24"

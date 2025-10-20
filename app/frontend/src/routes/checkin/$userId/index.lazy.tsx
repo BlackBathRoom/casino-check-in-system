@@ -23,7 +23,7 @@ function RouteComponent() {
         </p>
         <p className="flex gap-1 items-center">
           <span>ユーザーIDは</span>
-          <span className="pb-2 text-accent font-bold text-4xl md:text-5xl">
+          <span className="pb-2 text-info font-bold text-4xl md:text-5xl">
             {params.userId}
           </span>
           <span>です。</span>

@@ -60,7 +60,7 @@ function RouteComponent() {
         <div className="flex flex-col gap-2">
           <Button
             option="outline"
-            color="secondary"
+            color="primary"
             className="flex gap-1 justify-center items-center py-2"
           >
             <CupSoda className="w-7 h-7" />
@@ -68,7 +68,7 @@ function RouteComponent() {
           </Button>
           <Button
             option="outline"
-            color="secondary"
+            color="primary"
             className="flex gap-1 justify-center items-center py-2"
           >
             <HandCoins className="w-7 h-7" />

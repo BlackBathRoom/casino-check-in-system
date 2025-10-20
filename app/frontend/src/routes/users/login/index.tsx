@@ -23,8 +23,9 @@ function RouteComponent() {
         <h2 className="text-5xl font-bold text-info pb-2">Login</h2>
       </div>
       <div className="card-body">
-        <Form className="flex flex-col gap-2" onSubmit={onSubmit}>
-          <div className="flex flex-col gap-1">
+        <Form className="flex flex-col gap-3" onSubmit={onSubmit}>
+          <Divider direction="horizontal" />
+          <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-1">
               <Form.Label htmlFor="userId">ユーザー名</Form.Label>
               <Form.Input
@@ -34,6 +35,7 @@ function RouteComponent() {
                 minLength={1}
                 maxLength={50}
                 placeholder="Your user name"
+                color="primary"
                 className="w-full"
                 isRequired
               />
@@ -47,6 +49,7 @@ function RouteComponent() {
                 minLength={8}
                 maxLength={50}
                 placeholder="Your password"
+                color="primary"
                 className="w-full"
                 isRequired
               />

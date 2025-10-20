@@ -1,3 +1,5 @@
+import { cn } from '@/utils/cn';
+
 export type Props = {
   children: React.ReactNode;
   htmlFor?: string;
@@ -6,10 +8,7 @@ export type Props = {
 
 const Label: React.FC<Props> = ({ children, htmlFor, className = '' }) => {
   return (
-    <label
-      className={['label', className].filter(Boolean).join(' ')}
-      htmlFor={htmlFor}
-    >
+    <label className={cn('label', className)} htmlFor={htmlFor}>
       {children}
     </label>
   );

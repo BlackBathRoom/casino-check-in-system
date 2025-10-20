@@ -36,13 +36,18 @@ function RouteComponent() {
             minLength={1}
             maxLength={4}
             errorMessage="ユーザーIDは1字以上4字以内で入力してください"
+            color="accent"
             className="w-full"
             isRequired
           />
         </div>
         <Divider direction="horizontal" />
         <Form.SubmitBtn color="info">Check-In</Form.SubmitBtn>
-        <Button option="outline" color="neutral">
+        <Button
+          option="outline"
+          color="info"
+          onClick={() => navigate({ to: '..' })}
+        >
           トップに戻る
         </Button>
       </Form>
