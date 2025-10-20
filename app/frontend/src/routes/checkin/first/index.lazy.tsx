@@ -1,7 +1,8 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router';
+import React, { useState } from 'react';
 import Form from '@/components/ui/Form';
 import Divider from '@/components/layout/Divider';
+import Button from '@/components/ui/Button';
 
 export const Route = createLazyFileRoute('/checkin/first/')({
   component: RouteComponent,
@@ -9,11 +10,23 @@ export const Route = createLazyFileRoute('/checkin/first/')({
 
 function RouteComponent() {
   const [name, setName] = useState<string>('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    navigate({
+      to: '/checkin/$userId',
+      params: {
+        userId: '1234',
+      },
+    });
+  };
 
   return (
     <>
       <Divider direction="horizontal" />
-      <Form className="py-4 w-full flex flex-col gap-3">
+      <Form onSubmit={handleSubmit} className="py-4 w-full flex flex-col gap-3">
         <div className="flex flex-col gap-2 w-full mt-2">
           <Form.Label htmlFor="name">お名前</Form.Label>
           <Form.Input
@@ -29,6 +42,9 @@ function RouteComponent() {
         </div>
         <Divider direction="horizontal" />
         <Form.SubmitBtn color="info">Check-In</Form.SubmitBtn>
+        <Button option="outline" color="neutral">
+          トップに戻る
+        </Button>
       </Form>
     </>
   );
