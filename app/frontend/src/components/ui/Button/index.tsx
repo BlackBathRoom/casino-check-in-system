@@ -40,6 +40,7 @@ export type Props = {
   className?: string;
   onClick?: ButtonHTMLAttributes<HTMLButtonElement>['onClick'];
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+  forceActive?: string;
   disabled?: boolean;
 };
 
@@ -51,6 +52,7 @@ const Button: React.FC<Props> = ({
   className = '',
   onClick,
   type = 'button',
+  forceActive = false,
   disabled = false,
 }) => {
   return (
@@ -61,7 +63,8 @@ const Button: React.FC<Props> = ({
         color && colorClassMap[color],
         size && sizeClassMap[size],
         option && optionClassMap[option],
-        disabled ? 'btn-disabled' : 'btn-active',
+        forceActive && !disabled && 'btn-active',
+        disabled && 'btn-disabled',
         className
       )}
       onClick={onClick}
