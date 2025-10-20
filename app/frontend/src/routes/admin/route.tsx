@@ -5,5 +5,9 @@ export const Route = createFileRoute('/admin')({
 });
 
 function RouteComponent() {
-  return <Outlet />;
+  return (
+    <div className="flex flex-col h-full py-10 w-full lg:max-w-3xl gap-6 mx-auto">
+      <Outlet />
+    </div>
+  );
 }

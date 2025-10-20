@@ -15,7 +15,12 @@ import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as CheckinRouteRouteImport } from './routes/checkin/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminSaleRouteRouteImport } from './routes/admin/sale/route'
+import { Route as AdminCustomerRouteRouteImport } from './routes/admin/customer/route'
+import { Route as AdminCheckoutRouteRouteImport } from './routes/admin/checkout/route'
+import { Route as AdminCheckinRouteRouteImport } from './routes/admin/checkin/route'
 import { Route as UsersLoginIndexRouteImport } from './routes/users/login/index'
+import { Route as AdminCheckoutUserIdRouteRouteImport } from './routes/admin/checkout/$userId/route'
 
 const CheckinIndexLazyRouteImport = createFileRoute('/checkin/')()
 const AdminIndexLazyRouteImport = createFileRoute('/admin/')()
@@ -23,6 +28,13 @@ const UsersUserIdIndexLazyRouteImport = createFileRoute('/users/$userId/')()
 const CheckinRepeatIndexLazyRouteImport = createFileRoute('/checkin/repeat/')()
 const CheckinFirstIndexLazyRouteImport = createFileRoute('/checkin/first/')()
 const CheckinUserIdIndexLazyRouteImport = createFileRoute('/checkin/$userId/')()
+const AdminSaleIndexLazyRouteImport = createFileRoute('/admin/sale/')()
+const AdminCustomerIndexLazyRouteImport = createFileRoute('/admin/customer/')()
+const AdminCheckoutIndexLazyRouteImport = createFileRoute('/admin/checkout/')()
+const AdminCheckinIndexLazyRouteImport = createFileRoute('/admin/checkin/')()
+const AdminCheckoutUserIdIndexLazyRouteImport = createFileRoute(
+  '/admin/checkout/$userId/',
+)()
 
 const UsersRouteRoute = UsersRouteRouteImport.update({
   id: '/users',
@@ -54,6 +66,26 @@ const AdminIndexLazyRoute = AdminIndexLazyRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any).lazy(() => import('./routes/admin/index.lazy').then((d) => d.Route))
+const AdminSaleRouteRoute = AdminSaleRouteRouteImport.update({
+  id: '/sale',
+  path: '/sale',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCustomerRouteRoute = AdminCustomerRouteRouteImport.update({
+  id: '/customer',
+  path: '/customer',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCheckoutRouteRoute = AdminCheckoutRouteRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCheckinRouteRoute = AdminCheckinRouteRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const UsersUserIdIndexLazyRoute = UsersUserIdIndexLazyRouteImport.update({
   id: '/$userId/',
   path: '/$userId/',
@@ -82,24 +114,76 @@ const CheckinUserIdIndexLazyRoute = CheckinUserIdIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/checkin/$userId/index.lazy').then((d) => d.Route),
 )
+const AdminSaleIndexLazyRoute = AdminSaleIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminSaleRouteRoute,
+} as any).lazy(() =>
+  import('./routes/admin/sale/index.lazy').then((d) => d.Route),
+)
+const AdminCustomerIndexLazyRoute = AdminCustomerIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminCustomerRouteRoute,
+} as any).lazy(() =>
+  import('./routes/admin/customer/index.lazy').then((d) => d.Route),
+)
+const AdminCheckoutIndexLazyRoute = AdminCheckoutIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminCheckoutRouteRoute,
+} as any).lazy(() =>
+  import('./routes/admin/checkout/index.lazy').then((d) => d.Route),
+)
+const AdminCheckinIndexLazyRoute = AdminCheckinIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminCheckinRouteRoute,
+} as any).lazy(() =>
+  import('./routes/admin/checkin/index.lazy').then((d) => d.Route),
+)
 const UsersLoginIndexRoute = UsersLoginIndexRouteImport.update({
   id: '/login/',
   path: '/login/',
   getParentRoute: () => UsersRouteRoute,
 } as any)
+const AdminCheckoutUserIdRouteRoute =
+  AdminCheckoutUserIdRouteRouteImport.update({
+    id: '/$userId',
+    path: '/$userId',
+    getParentRoute: () => AdminCheckoutRouteRoute,
+  } as any)
+const AdminCheckoutUserIdIndexLazyRoute =
+  AdminCheckoutUserIdIndexLazyRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AdminCheckoutUserIdRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/admin/checkout/$userId/index.lazy').then((d) => d.Route),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
+  '/admin/checkin': typeof AdminCheckinRouteRouteWithChildren
+  '/admin/checkout': typeof AdminCheckoutRouteRouteWithChildren
+  '/admin/customer': typeof AdminCustomerRouteRouteWithChildren
+  '/admin/sale': typeof AdminSaleRouteRouteWithChildren
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
+  '/admin/checkout/$userId': typeof AdminCheckoutUserIdRouteRouteWithChildren
   '/users/login': typeof UsersLoginIndexRoute
+  '/admin/checkin/': typeof AdminCheckinIndexLazyRoute
+  '/admin/checkout/': typeof AdminCheckoutIndexLazyRoute
+  '/admin/customer/': typeof AdminCustomerIndexLazyRoute
+  '/admin/sale/': typeof AdminSaleIndexLazyRoute
   '/checkin/$userId': typeof CheckinUserIdIndexLazyRoute
   '/checkin/first': typeof CheckinFirstIndexLazyRoute
   '/checkin/repeat': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId': typeof UsersUserIdIndexLazyRoute
+  '/admin/checkout/$userId/': typeof AdminCheckoutUserIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,10 +191,15 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexLazyRoute
   '/checkin': typeof CheckinIndexLazyRoute
   '/users/login': typeof UsersLoginIndexRoute
+  '/admin/checkin': typeof AdminCheckinIndexLazyRoute
+  '/admin/checkout': typeof AdminCheckoutIndexLazyRoute
+  '/admin/customer': typeof AdminCustomerIndexLazyRoute
+  '/admin/sale': typeof AdminSaleIndexLazyRoute
   '/checkin/$userId': typeof CheckinUserIdIndexLazyRoute
   '/checkin/first': typeof CheckinFirstIndexLazyRoute
   '/checkin/repeat': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId': typeof UsersUserIdIndexLazyRoute
+  '/admin/checkout/$userId': typeof AdminCheckoutUserIdIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -118,13 +207,23 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
+  '/admin/checkin': typeof AdminCheckinRouteRouteWithChildren
+  '/admin/checkout': typeof AdminCheckoutRouteRouteWithChildren
+  '/admin/customer': typeof AdminCustomerRouteRouteWithChildren
+  '/admin/sale': typeof AdminSaleRouteRouteWithChildren
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
+  '/admin/checkout/$userId': typeof AdminCheckoutUserIdRouteRouteWithChildren
   '/users/login/': typeof UsersLoginIndexRoute
+  '/admin/checkin/': typeof AdminCheckinIndexLazyRoute
+  '/admin/checkout/': typeof AdminCheckoutIndexLazyRoute
+  '/admin/customer/': typeof AdminCustomerIndexLazyRoute
+  '/admin/sale/': typeof AdminSaleIndexLazyRoute
   '/checkin/$userId/': typeof CheckinUserIdIndexLazyRoute
   '/checkin/first/': typeof CheckinFirstIndexLazyRoute
   '/checkin/repeat/': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId/': typeof UsersUserIdIndexLazyRoute
+  '/admin/checkout/$userId/': typeof AdminCheckoutUserIdIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -133,13 +232,23 @@ export interface FileRouteTypes {
     | '/admin'
     | '/checkin'
     | '/users'
+    | '/admin/checkin'
+    | '/admin/checkout'
+    | '/admin/customer'
+    | '/admin/sale'
     | '/admin/'
     | '/checkin/'
+    | '/admin/checkout/$userId'
     | '/users/login'
+    | '/admin/checkin/'
+    | '/admin/checkout/'
+    | '/admin/customer/'
+    | '/admin/sale/'
     | '/checkin/$userId'
     | '/checkin/first'
     | '/checkin/repeat'
     | '/users/$userId'
+    | '/admin/checkout/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -147,23 +256,38 @@ export interface FileRouteTypes {
     | '/admin'
     | '/checkin'
     | '/users/login'
+    | '/admin/checkin'
+    | '/admin/checkout'
+    | '/admin/customer'
+    | '/admin/sale'
     | '/checkin/$userId'
     | '/checkin/first'
     | '/checkin/repeat'
     | '/users/$userId'
+    | '/admin/checkout/$userId'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/checkin'
     | '/users'
+    | '/admin/checkin'
+    | '/admin/checkout'
+    | '/admin/customer'
+    | '/admin/sale'
     | '/admin/'
     | '/checkin/'
+    | '/admin/checkout/$userId'
     | '/users/login/'
+    | '/admin/checkin/'
+    | '/admin/checkout/'
+    | '/admin/customer/'
+    | '/admin/sale/'
     | '/checkin/$userId/'
     | '/checkin/first/'
     | '/checkin/repeat/'
     | '/users/$userId/'
+    | '/admin/checkout/$userId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -217,6 +341,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexLazyRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/sale': {
+      id: '/admin/sale'
+      path: '/sale'
+      fullPath: '/admin/sale'
+      preLoaderRoute: typeof AdminSaleRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/customer': {
+      id: '/admin/customer'
+      path: '/customer'
+      fullPath: '/admin/customer'
+      preLoaderRoute: typeof AdminCustomerRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/checkout': {
+      id: '/admin/checkout'
+      path: '/checkout'
+      fullPath: '/admin/checkout'
+      preLoaderRoute: typeof AdminCheckoutRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/checkin': {
+      id: '/admin/checkin'
+      path: '/checkin'
+      fullPath: '/admin/checkin'
+      preLoaderRoute: typeof AdminCheckinRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/users/$userId/': {
       id: '/users/$userId/'
       path: '/$userId'
@@ -245,6 +397,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckinUserIdIndexLazyRouteImport
       parentRoute: typeof CheckinRouteRoute
     }
+    '/admin/sale/': {
+      id: '/admin/sale/'
+      path: '/'
+      fullPath: '/admin/sale/'
+      preLoaderRoute: typeof AdminSaleIndexLazyRouteImport
+      parentRoute: typeof AdminSaleRouteRoute
+    }
+    '/admin/customer/': {
+      id: '/admin/customer/'
+      path: '/'
+      fullPath: '/admin/customer/'
+      preLoaderRoute: typeof AdminCustomerIndexLazyRouteImport
+      parentRoute: typeof AdminCustomerRouteRoute
+    }
+    '/admin/checkout/': {
+      id: '/admin/checkout/'
+      path: '/'
+      fullPath: '/admin/checkout/'
+      preLoaderRoute: typeof AdminCheckoutIndexLazyRouteImport
+      parentRoute: typeof AdminCheckoutRouteRoute
+    }
+    '/admin/checkin/': {
+      id: '/admin/checkin/'
+      path: '/'
+      fullPath: '/admin/checkin/'
+      preLoaderRoute: typeof AdminCheckinIndexLazyRouteImport
+      parentRoute: typeof AdminCheckinRouteRoute
+    }
     '/users/login/': {
       id: '/users/login/'
       path: '/login'
@@ -252,14 +432,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersLoginIndexRouteImport
       parentRoute: typeof UsersRouteRoute
     }
+    '/admin/checkout/$userId': {
+      id: '/admin/checkout/$userId'
+      path: '/$userId'
+      fullPath: '/admin/checkout/$userId'
+      preLoaderRoute: typeof AdminCheckoutUserIdRouteRouteImport
+      parentRoute: typeof AdminCheckoutRouteRoute
+    }
+    '/admin/checkout/$userId/': {
+      id: '/admin/checkout/$userId/'
+      path: '/'
+      fullPath: '/admin/checkout/$userId/'
+      preLoaderRoute: typeof AdminCheckoutUserIdIndexLazyRouteImport
+      parentRoute: typeof AdminCheckoutUserIdRouteRoute
+    }
   }
 }
 
+interface AdminCheckinRouteRouteChildren {
+  AdminCheckinIndexLazyRoute: typeof AdminCheckinIndexLazyRoute
+}
+
+const AdminCheckinRouteRouteChildren: AdminCheckinRouteRouteChildren = {
+  AdminCheckinIndexLazyRoute: AdminCheckinIndexLazyRoute,
+}
+
+const AdminCheckinRouteRouteWithChildren =
+  AdminCheckinRouteRoute._addFileChildren(AdminCheckinRouteRouteChildren)
+
+interface AdminCheckoutUserIdRouteRouteChildren {
+  AdminCheckoutUserIdIndexLazyRoute: typeof AdminCheckoutUserIdIndexLazyRoute
+}
+
+const AdminCheckoutUserIdRouteRouteChildren: AdminCheckoutUserIdRouteRouteChildren =
+  {
+    AdminCheckoutUserIdIndexLazyRoute: AdminCheckoutUserIdIndexLazyRoute,
+  }
+
+const AdminCheckoutUserIdRouteRouteWithChildren =
+  AdminCheckoutUserIdRouteRoute._addFileChildren(
+    AdminCheckoutUserIdRouteRouteChildren,
+  )
+
+interface AdminCheckoutRouteRouteChildren {
+  AdminCheckoutUserIdRouteRoute: typeof AdminCheckoutUserIdRouteRouteWithChildren
+  AdminCheckoutIndexLazyRoute: typeof AdminCheckoutIndexLazyRoute
+}
+
+const AdminCheckoutRouteRouteChildren: AdminCheckoutRouteRouteChildren = {
+  AdminCheckoutUserIdRouteRoute: AdminCheckoutUserIdRouteRouteWithChildren,
+  AdminCheckoutIndexLazyRoute: AdminCheckoutIndexLazyRoute,
+}
+
+const AdminCheckoutRouteRouteWithChildren =
+  AdminCheckoutRouteRoute._addFileChildren(AdminCheckoutRouteRouteChildren)
+
+interface AdminCustomerRouteRouteChildren {
+  AdminCustomerIndexLazyRoute: typeof AdminCustomerIndexLazyRoute
+}
+
+const AdminCustomerRouteRouteChildren: AdminCustomerRouteRouteChildren = {
+  AdminCustomerIndexLazyRoute: AdminCustomerIndexLazyRoute,
+}
+
+const AdminCustomerRouteRouteWithChildren =
+  AdminCustomerRouteRoute._addFileChildren(AdminCustomerRouteRouteChildren)
+
+interface AdminSaleRouteRouteChildren {
+  AdminSaleIndexLazyRoute: typeof AdminSaleIndexLazyRoute
+}
+
+const AdminSaleRouteRouteChildren: AdminSaleRouteRouteChildren = {
+  AdminSaleIndexLazyRoute: AdminSaleIndexLazyRoute,
+}
+
+const AdminSaleRouteRouteWithChildren = AdminSaleRouteRoute._addFileChildren(
+  AdminSaleRouteRouteChildren,
+)
+
 interface AdminRouteRouteChildren {
+  AdminCheckinRouteRoute: typeof AdminCheckinRouteRouteWithChildren
+  AdminCheckoutRouteRoute: typeof AdminCheckoutRouteRouteWithChildren
+  AdminCustomerRouteRoute: typeof AdminCustomerRouteRouteWithChildren
+  AdminSaleRouteRoute: typeof AdminSaleRouteRouteWithChildren
   AdminIndexLazyRoute: typeof AdminIndexLazyRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminCheckinRouteRoute: AdminCheckinRouteRouteWithChildren,
+  AdminCheckoutRouteRoute: AdminCheckoutRouteRouteWithChildren,
+  AdminCustomerRouteRoute: AdminCustomerRouteRouteWithChildren,
+  AdminSaleRouteRoute: AdminSaleRouteRouteWithChildren,
   AdminIndexLazyRoute: AdminIndexLazyRoute,
 }
 

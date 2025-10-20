@@ -1,98 +1,83 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
-import { UserStar } from 'lucide-react';
-import Button from '@/components/ui/Button';
-import { Datetime } from '@/utils/time';
-import Timer from '@/components/ui/Timer';
+import { Link, createLazyFileRoute } from '@tanstack/react-router';
+import { LogIn, LogOut, ShoppingCart, User, UserStar } from 'lucide-react';
+import type { LinkProps } from '@tanstack/react-router';
+import { cn } from '@/utils/cn';
+import IconLabel from '@/components/ui/IconLabel';
 
 export const Route = createLazyFileRoute('/admin/')({
   component: RouteComponent,
 });
 
-type User = {
+type Menu = {
   name: string;
-  time: Datetime;
-  seatNumber: number;
-  fee: number;
-  tip: number;
-  isDrinking: boolean;
-  status: 'normal';
+  description: string;
+  icon: React.ReactNode;
+  link: Pick<LinkProps, 'to'>;
 };
 
-const users: Array<User> = [
-  {
-    name: 'hogehoge',
-    time: Datetime.serialize('2025-10-15 00:30'),
-    seatNumber: 5,
-    fee: 3000,
-    tip: 500,
-    isDrinking: true,
-    status: 'normal',
-  },
-  {
-    name: 'fugafuga',
-    time: Datetime.serialize('2025-10-15 18:45'),
-    seatNumber: 12,
-    fee: 2500,
-    tip: 0,
-    isDrinking: false,
-    status: 'normal',
-  },
-  {
-    name: 'piyopiyo',
-    time: Datetime.serialize('2025-10-15 19:00'),
-    seatNumber: 20,
-    fee: 4000,
-    tip: 1000,
-    isDrinking: true,
-    status: 'normal',
-  },
-];
-
 function RouteComponent() {
+  const menus: Array<Menu> = [
+    {
+      name: '販売管理',
+      description: 'ドリンク・チップの提供確認',
+      icon: <ShoppingCart className="h-8 w-8" />,
+      link: {
+        to: '/admin/sale',
+      },
+    },
+    {
+      name: '顧客管理',
+      description: '顧客の情報確認・編集',
+      icon: <User className="h-8 w-8" />,
+      link: {
+        to: '/admin/customer',
+      },
+    },
+    {
+      name: '入店処理',
+      description: '新規入店・再入店処理',
+      icon: <LogIn className="h-8 w-8" />,
+      link: {
+        to: '/admin/checkin',
+      },
+    },
+    {
+      name: '退店処理',
+      description: '退店処理・精算処理',
+      icon: <LogOut className="h-8 w-8" />,
+      link: {
+        to: '/admin/checkout',
+      },
+    },
+  ];
+
   return (
-    <div className="flex flex-col items-center py-10 w-full lg:max-w-3xl gap-6 mx-auto">
-      <div className="flex justify-between w-full">
-        <div className="flex gap-4 pt-1">
-          <UserStar className="h-8 w-8" />
-          <h2 className="text-2xl">管理者トップページ</h2>
-        </div>
-        <Button color="info" className="text-lg">
-          新規受付
-        </Button>
+    <>
+      <IconLabel icon={UserStar} className="gap-4" iconClassName="h-8 w-8">
+        <h2 className="text-2xl">管理者トップページ</h2>
+      </IconLabel>
+      <div className="flex flex-col md:flex-row md:flex-wrap justify-between gap-4 px-5">
+        {menus.map((menu, idx) => (
+          <Link
+            key={idx}
+            to={menu.link.to}
+            className={cn(
+              'card card-border bg-base-100 shadow-md min-w-52 min-h-34',
+              'transition duration-300 hover:shadow-xl hover:scale-[1.01]'
+            )}
+          >
+            <div className="card-body flex flex-col gap-3">
+              <div className="card-title">
+                {menu.icon}
+                <h3 className="text-2xl">{menu.name}</h3>
+              </div>
+              <div className="flex flex-col gap-2 text-md">
+                <p>{menu.description}</p>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
-      <div className="w-full">
-        <table className="table border border-base-300">
-          <thead className="table-header-group">
-            <tr className="bg-base-200">
-              <th>名前</th>
-              <th>席番号</th>
-              <th>時間</th>
-              <th>料金</th>
-              <th>チップ</th>
-              <th>飲み放題</th>
-              <th>ステータス</th>
-            </tr>
-          </thead>
-          <tbody className="table-row-group">
-            {users.map((user, index) => (
-              <tr
-                key={index}
-                className="border border-t-1 border-base-200 bg-base-100"
-              >
-                <td>{user.name}</td>
-                <td>{user.seatNumber}</td>
-                <td>
-                  <Timer datetime={user.time} isRunning />
-                </td>
-                <td>{user.fee}円</td>
-                <td>{user.tip}円</td>
-                <td>{user.isDrinking ? 'あり' : 'なし'}</td>
-                <td>{user.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    </>
   );
 }
