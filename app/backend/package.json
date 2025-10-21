@@ -7,10 +7,16 @@
     "check": "prettier --write ./src && eslint --fix ./src"
   },
   "dependencies": {
-    "hono": "^4.9.10"
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.6",
+    "hono": "^4.9.10",
+    "kysely": "^0.28.8",
+    "mysql2": "^3.15.2",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@hono/eslint-config": "^2.0.3",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.31.5"
   }
 }
