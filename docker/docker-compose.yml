@@ -1,0 +1,16 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: casino_mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    env_file:
+      - ./../.env
+    environment:
+      - TZ="Asia/Tokyo"
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/mysql_data:/var/lib/mysql
