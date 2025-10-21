@@ -8,6 +8,14 @@
     {
       "type": "volume",
       "target": "${containerWorkspaceFolder}/node_modules"
+    },
+    {
+      "type": "volume",
+      "target": "${containerWorkspaceFolder}/app/frontend/node_modules"
+    },
+    {
+      "type": "volume",
+      "target": "${containerWorkspaceFolder}/app/backend/node_modules"
     }
   ],
   "customizations": {
@@ -31,6 +39,7 @@
       ]
     }
   },
-  "postAttachCommand": "sudo chown -R bun:bun /workspace /workspace/node_modules && bun install",
+  "postCreateCommand": "chmod +x .devcontainer/scripts/*.sh",
+  "postAttachCommand": "./.devcontainer/scripts/postAttachCommand.sh",
   "forwardPorts": [3000, 3157]
 }

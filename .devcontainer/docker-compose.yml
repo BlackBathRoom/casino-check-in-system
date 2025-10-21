@@ -1,4 +1,5 @@
 services:
+
   app-dev:
     build:
       context: .
@@ -6,6 +7,25 @@ services:
     volumes:
       - ./../:/workspace:cached
     command: sleep infinity
+    depends_on:
+      - mysql
+    networks:
+      - dev_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: casino_mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    env_file:
+      - ./../.env
+    environment:
+      - TZ="Asia/Tokyo"
+    volumes:
+      - ./../docker/mysql/init:/docker-entrypoint-initdb.d
+      - ./../docker/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./../docker/mysql/mysql_data:/var/lib/mysql
     networks:
       - dev_network
 
