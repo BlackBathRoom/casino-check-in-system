@@ -2,8 +2,8 @@ import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
   dialect: 'mysql', // 'mysql' | 'sqlite' | 'turso'
-  schema: './src/services/database/schema.ts',
-  out: './src/services/database/migrations',
+  schema: './src/lib/database/schema.ts',
+  out: './src/lib/database/migrations',
   dbCredentials: {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
