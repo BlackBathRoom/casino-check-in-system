@@ -2,26 +2,23 @@ import { OrderNotFoundError } from '@/error';
 import { db } from '@/lib/database';
 import { checkExistsUser } from '@/lib/database/utils';
 
-const getOrders = async (isProvided?: boolean) => {
-  const query = db.selectFrom('orders').selectAll();
-  if (isProvided !== undefined) {
-    query.where('isProvided', '=', isProvided);
-  }
-  return await query.execute();
-};
+const getOrders = async (userId?: string, isProvided?: boolean) => {
+  const query = await (async () => {
+    let q = db.selectFrom('orders').selectAll();
 
-const getOrdersByUserId = async (userId: string, isProvided?: boolean) => {
-  await checkExistsUser(userId);
+    if (userId !== undefined) {
+      await checkExistsUser(userId);
+      q = q.where('userId', '=', userId);
+    }
 
-  const query = (() => {
-    let q = db.selectFrom('orders').selectAll().where('userId', '=', userId);
     if (isProvided !== undefined) {
       q = q.where('isProvided', '=', isProvided);
     }
+
     return q;
   })();
 
-  return await query.execute();
+  return query.execute();
 };
 
 const registerOrder = async (userId: string, productId: number) => {
@@ -55,4 +52,4 @@ const switchProvidedStatus = async (orderId: number, status: boolean) => {
     .executeTakeFirst();
 };
 
-export { getOrders, registerOrder, getOrdersByUserId, switchProvidedStatus };
+export { getOrders, registerOrder, switchProvidedStatus };

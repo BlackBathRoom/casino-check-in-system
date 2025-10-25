@@ -2,43 +2,32 @@ import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import {
   getOrders,
-  getOrdersByUserId,
   registerOrder,
   switchProvidedStatus,
 } from '@/lib/database/orders';
 import {
-  getQuerySchema,
+  orderQuerySchema,
   registerOrderSchema,
   switchProvidedStatusSchema,
 } from '@/routes/orders/schema';
 
 const route = new Hono()
-  .get('/', zValidator('query', getQuerySchema), async (c) => {
+  .get('/', zValidator('query', orderQuerySchema), async (c) => {
     const query = c.req.valid('query');
     return c.json(
       {
-        orders: await (async () =>
-          query === undefined
-            ? await getOrders()
-            : await getOrders(query.isProvided))(),
+        orders: await getOrders(query?.userId, query?.isProvided),
       },
       200
     );
   })
-  .post('/:userId', zValidator('json', registerOrderSchema), async (c) => {
-    const { userId } = c.req.param();
-    const { productId } = c.req.valid('json');
-
+  .post('/', zValidator('json', registerOrderSchema), async (c) => {
+    const { userId, productId } = c.req.valid('json');
     await registerOrder(userId, productId);
-
     return c.json({ message: 'Order registered successfully' });
   })
-  .get('/:userId', async (c) => {
-    const { userId } = c.req.param();
-    return c.json(await getOrdersByUserId(userId));
-  })
   .patch(
-    '/:orderId/isProvided',
+    '/:orderId/',
     zValidator('json', switchProvidedStatusSchema),
     async (c) => {
       const { orderId } = c.req.param();
