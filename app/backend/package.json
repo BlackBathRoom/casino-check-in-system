@@ -1,12 +1,13 @@
 {
   "name": "backend",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
+    "dev": "bun run --hot src/routes/index.ts",
     "lint": "eslint ./src",
     "format": "prettier --write ./src",
     "check": "prettier --write ./src && eslint --fix ./src"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.7.4",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.6",
     "hono": "^4.9.10",

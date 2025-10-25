@@ -17,7 +17,6 @@ services:
     container_name: casino_mysql
     ports:
       - "3306:3306"
-    restart: always
     env_file:
       - ./../.env
     environment:
