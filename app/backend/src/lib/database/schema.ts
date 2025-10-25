@@ -16,8 +16,7 @@ const users = mysqlTable('users', {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   fee: int('fee').notNull().default(0),
-  isNomihodai: boolean('isNomihodai').notNull().default(false),
-  nomihodaiStartAt: datetime('nomihodaiStartAt').default(sql`NULL`),
+  nomihodaiEndAt: datetime('nomihodaiEndAt').default(sql`NULL`),
   isActive: boolean('isActive').notNull().default(true),
 });
 
@@ -36,6 +35,7 @@ const orders = mysqlTable('orders', {
   productId: int('productId')
     .notNull()
     .references(() => products.id),
+  isProvided: boolean('isProvided').notNull().default(false),
 });
 
 const ranking = mysqlTable('ranking', {
