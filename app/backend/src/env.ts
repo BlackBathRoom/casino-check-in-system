@@ -38,8 +38,6 @@ try {
   throw err;
 }
 
-console.log(process.env.DATABASE_HOST);
-
 declare module 'bun' {
   interface Env extends z.infer<typeof zEnv> {}
 }
