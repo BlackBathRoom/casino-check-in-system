@@ -1,15 +1,12 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import {
-  getOrders,
-  registerOrder,
-  switchProvidedStatus,
-} from '@/lib/database/orders';
+import { getOrders, switchProvidedStatus } from '@/lib/database/orders';
 import {
   orderQuerySchema,
   registerOrderSchema,
   switchProvidedStatusSchema,
 } from '@/routes/orders/schema';
+import { processOrder } from '@/services/order';
 
 const route = new Hono()
   .get('/', zValidator('query', orderQuerySchema), async (c) => {
@@ -23,7 +20,7 @@ const route = new Hono()
   })
   .post('/', zValidator('json', registerOrderSchema), async (c) => {
     const { userId, productId } = c.req.valid('json');
-    await registerOrder(userId, productId);
+    await processOrder(userId, productId);
     return c.json({ message: 'Order registered successfully' });
   })
   .patch(
