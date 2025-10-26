@@ -14,7 +14,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as CheckinRouteRouteImport } from './routes/checkin/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminSaleRouteRouteImport } from './routes/admin/sale/route'
 import { Route as AdminCustomerRouteRouteImport } from './routes/admin/customer/route'
 import { Route as AdminCheckoutRouteRouteImport } from './routes/admin/checkout/route'
@@ -49,11 +48,6 @@ const CheckinRouteRoute = CheckinRouteRouteImport.update({
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckinIndexLazyRoute = CheckinIndexLazyRouteImport.update({
@@ -163,7 +157,6 @@ const AdminCheckoutUserIdIndexLazyRoute =
   )
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
@@ -186,7 +179,6 @@ export interface FileRoutesByFullPath {
   '/admin/checkout/$userId/': typeof AdminCheckoutUserIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/users': typeof UsersRouteRouteWithChildren
   '/admin': typeof AdminIndexLazyRoute
   '/checkin': typeof CheckinIndexLazyRoute
@@ -203,7 +195,6 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
@@ -228,7 +219,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/admin'
     | '/checkin'
     | '/users'
@@ -251,7 +241,6 @@ export interface FileRouteTypes {
     | '/admin/checkout/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/users'
     | '/admin'
     | '/checkin'
@@ -267,7 +256,6 @@ export interface FileRouteTypes {
     | '/admin/checkout/$userId'
   id:
     | '__root__'
-    | '/'
     | '/admin'
     | '/checkin'
     | '/users'
@@ -291,7 +279,6 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   CheckinRouteRoute: typeof CheckinRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
@@ -318,13 +305,6 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkin/': {
@@ -563,7 +543,6 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   CheckinRouteRoute: CheckinRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
