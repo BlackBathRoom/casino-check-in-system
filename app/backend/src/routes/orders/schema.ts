@@ -3,7 +3,10 @@ import { z } from 'zod';
 const orderQuerySchema = z
   .object({
     userId: z.string().optional(),
-    isProvided: z.coerce.boolean().optional(),
+    isProvided: z
+      .enum(['true', 'false'])
+      .transform((val) => val === 'true')
+      .optional(),
   })
   .optional();
 
