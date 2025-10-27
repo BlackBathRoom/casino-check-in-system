@@ -136,6 +136,13 @@ const addFee = async (userId: string, fee: number) => {
     .execute();
 };
 
+const resetFee = async (userId: string) =>
+  await db
+    .updateTable('users')
+    .set({ fee: 0 })
+    .where('id', '=', userId)
+    .execute();
+
 const getEnterTime = async (userId: string) => {
   const user = await db
     .selectFrom('users')
@@ -182,6 +189,7 @@ export {
   isAvailableUserName,
   isExistsUser,
   registerUser,
+  resetFee,
   switchUserStatus,
   updateNomihodaiEndAt,
   updateTime,
