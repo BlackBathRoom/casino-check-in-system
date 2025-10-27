@@ -1,11 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { ZodError } from 'zod';
-import {
-  OrderNotFoundError,
-  UserNameAlreadyExistsError,
-  UserNotFoundError,
-} from '@/error';
+import { OrderNotFoundError, UserNotFoundError } from '@/error';
 import ordersRoute from '@/routes/orders';
 import productsRoute from '@/routes/products';
 import usersRoute from '@/routes/users';
@@ -25,10 +21,6 @@ const app = new Hono()
   .onError((err, c) => {
     if (err instanceof UserNotFoundError) {
       return c.json({ message: err.message }, 404);
-    }
-
-    if (err instanceof UserNameAlreadyExistsError) {
-      return c.json({ message: err.message }, 409);
     }
 
     if (err instanceof OrderNotFoundError) {
