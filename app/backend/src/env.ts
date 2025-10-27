@@ -25,6 +25,8 @@ const zEnv = z.object({
   DATABASE_USER: zStrVar,
   DATABASE_PASSWORD: zStrVar,
   DATABASE_NAME: zStrVar,
+  REDIS_HOST: zStrVar,
+  REDIS_PORT: zNumVar,
 });
 
 try {
