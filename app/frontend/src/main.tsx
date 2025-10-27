@@ -9,6 +9,7 @@ import { routeTree } from './routeTree.gen';
 
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
+import type { ApiError } from '@/api/shared/apiError.ts';
 
 // Create a new router instance
 
@@ -28,6 +29,12 @@ const router = createRouter({
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
+  }
+}
+
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: ApiError;
   }
 }
 
