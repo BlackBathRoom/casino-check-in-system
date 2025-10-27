@@ -1,10 +1,8 @@
 import { Link, createLazyFileRoute } from '@tanstack/react-router';
-import { BadgeInfo, CircleX, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import React, { useState } from 'react';
-import { useNotification } from '@/hooks/useNotification';
 import Form from '@/components/ui/Form';
 import Divider from '@/components/layout/Divider';
-import Notification from '@/components/ui/Notification';
 import IconLabel from '@/components/ui/IconLabel';
 import { useReenterUser, useRegisterUser } from '@/api/route/users';
 
@@ -24,6 +22,9 @@ const options: Array<Option> = [
 
 function RouteComponent() {
   const searchParam = Route.useSearch();
+  const {
+    notification: { addNotification },
+  } = Route.useRouteContext();
 
   const [info, setInfo] = useState<string>(searchParam.userId ?? '');
   const [selectedOption, setSelectedOption] = useState<Option>(
@@ -32,8 +33,6 @@ function RouteComponent() {
 
   const registerMutation = useRegisterUser();
   const reenterMutation = useReenterUser();
-
-  const { addNotification, notificationItems } = useNotification();
 
   const handleCheckIn = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -131,22 +130,6 @@ function RouteComponent() {
           </Form>
         </div>
       </div>
-      <Notification>
-        {notificationItems.map((item) => (
-          <Notification.Alert
-            key={item.id}
-            color={item.type}
-            className="text-xl flex items-center gap-3"
-          >
-            {item.type === 'info' ? (
-              <BadgeInfo className="w-6 h-6" />
-            ) : (
-              <CircleX className="w-6 h-6" />
-            )}
-            <span>{item.message}</span>
-          </Notification.Alert>
-        ))}
-      </Notification>
     </>
   );
 }
