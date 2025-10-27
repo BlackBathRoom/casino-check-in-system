@@ -10,7 +10,7 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { cn } from '@/utils/cn';
 import IconLabel from '@/components/ui/IconLabel';
-import { useFetchOrders } from '@/api/route/orders';
+import { useFetchOrders, useSwitchProvidedStatus } from '@/api/route/orders';
 
 export const Route = createLazyFileRoute('/admin/sale/')({
   component: RouteComponent,
@@ -24,6 +24,8 @@ function RouteComponent() {
       isProvided: param.isProvided === null ? undefined : param.isProvided,
     })
   );
+
+  const { mutate } = useSwitchProvidedStatus();
 
   return (
     <>
@@ -58,7 +60,7 @@ function RouteComponent() {
           </div>
           <div className="card card-border bg-base-100 shadow-md">
             <div className="card-body">
-              <h3 className="card-title text-2xl text-error mx-auto">総売上</h3>
+              <h3 className="card-title text-2xl text-error mx-auto">売上</h3>
               <div className="flex w-full items-center gap-1 p-1">
                 <span className="text-5xl text-info">
                   {orders.reduce((acc, order) => acc + order.price, 0)}
@@ -144,6 +146,12 @@ function RouteComponent() {
                         'btn btn-sm btn-square ml-7',
                         order.isProvided ? 'btn-success' : 'btn-error'
                       )}
+                      onClick={() =>
+                        mutate({
+                          orderId: order.id,
+                          isProvided: !order.isProvided,
+                        })
+                      }
                     >
                       <Check className="w-4 h-4" />
                     </button>

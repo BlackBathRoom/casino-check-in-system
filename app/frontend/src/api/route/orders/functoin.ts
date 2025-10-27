@@ -33,4 +33,16 @@ const registerOrder = async (body: RegisterOrderBody) => {
   return;
 };
 
-export { fetchOrders, registerOrder };
+const switchProvidedStatus = async (orderId: number, isProvided: boolean) => {
+  const res = await client.orders[':orderId'].$patch({
+    param: { orderId: orderId.toString() },
+    json: { isProvided },
+  });
+
+  if (!res.ok) {
+    throw new ApiError(res.status, 'Failed to switch provided status');
+  }
+
+  return;
+};
+export { fetchOrders, registerOrder, switchProvidedStatus };

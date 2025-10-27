@@ -8,7 +8,11 @@ import type {
   RegisterOrderBody,
 } from '@/api/route/orders/type';
 import { ordersKey } from '@/api/route/orders/key';
-import { fetchOrders, registerOrder } from '@/api/route/orders/functoin';
+import {
+  fetchOrders,
+  registerOrder,
+  switchProvidedStatus,
+} from '@/api/route/orders/functoin';
 import { usersKey } from '@/api/route/users/key';
 
 const useFetchOrders = (params?: OrderQueryParams) =>
@@ -33,4 +37,22 @@ const useRegisterOrder = () => {
   });
 };
 
-export { useFetchOrders, useRegisterOrder };
+const useSwitchProvidedStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      orderId,
+      isProvided,
+    }: {
+      orderId: number;
+      isProvided: boolean;
+    }) => await switchProvidedStatus(orderId, isProvided),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ordersKey.lists(),
+      });
+    },
+  });
+};
+
+export { useFetchOrders, useRegisterOrder, useSwitchProvidedStatus };

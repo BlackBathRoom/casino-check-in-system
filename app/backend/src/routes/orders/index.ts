@@ -58,7 +58,7 @@ const route = new Hono()
     }
   })
   .patch(
-    '/:orderId/',
+    '/:orderId',
     zValidator('json', switchProvidedStatusSchema),
     async (c) => {
       const { orderId } = c.req.param();
