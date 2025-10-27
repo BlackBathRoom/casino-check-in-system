@@ -7,6 +7,7 @@ import type { UserQueryParams } from '@/api/route/users/type';
 import { usersKey } from '@/api/route/users/key';
 import {
   confirmFee,
+  enableNomihodai,
   fetchUser,
   fetchUsers,
   leave,
@@ -69,8 +70,20 @@ const useLeaveUser = () =>
     mutationFn: async (userId: string) => await leave(userId),
   });
 
+const useEnableNomihodai = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (userId: string) => await enableNomihodai(userId),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: usersKey.lists(),
+      }),
+  });
+};
+
 export {
   useConfirmFee,
+  useEnableNomihodai,
   useFetchUserOptions,
   useFetchUsersOptions,
   useFindUser,

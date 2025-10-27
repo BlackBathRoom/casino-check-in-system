@@ -81,4 +81,22 @@ const leave = async (userId: string) => {
   }
 };
 
-export { confirmFee, fetchUser, fetchUsers, registerUser, reenter, leave };
+const enableNomihodai = async (userId: string) => {
+  const res = await client.users[':userId'].nomihodai.$post({
+    param: { userId },
+  });
+
+  if (!res.ok) {
+    throw new ApiError(res.status, 'Failed to enable nomihodai');
+  }
+};
+
+export {
+  confirmFee,
+  enableNomihodai,
+  fetchUser,
+  fetchUsers,
+  registerUser,
+  reenter,
+  leave,
+};

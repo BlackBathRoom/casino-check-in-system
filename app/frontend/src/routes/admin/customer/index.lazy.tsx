@@ -19,7 +19,11 @@ import Divider from '@/components/layout/Divider';
 import Form from '@/components/ui/Form';
 import Button from '@/components/ui/Button';
 import IconLabel from '@/components/ui/IconLabel';
-import { useConfirmFee, useFetchUsersOptions } from '@/api/route/users';
+import {
+  useConfirmFee,
+  useEnableNomihodai,
+  useFetchUsersOptions,
+} from '@/api/route/users';
 import { useFetchProductsOptions } from '@/api/route/products';
 import { useRegisterOrder } from '@/api/route/orders';
 
@@ -43,9 +47,11 @@ function RouteComponent() {
 
   const confirmFeeMutation = useConfirmFee();
   const orderMutation = useRegisterOrder();
+  const enableNomihodaiMutation = useEnableNomihodai();
 
-  const exitConfirmModal = useModal('customer-exit-confirm-modal');
-  const productModal = useModal('customer-product-modal');
+  const exitConfirmModal = useModal('exit-confirm-modal');
+  const productModal = useModal('product-modal');
+  const confirmEnableNomihodai = useModal('confirm-enable-nomihodai');
 
   const handleOrder = (productId: number) => {
     if (selectedUserId === null) return;
@@ -58,16 +64,24 @@ function RouteComponent() {
     productModal.closeModal();
   };
 
-  const handleConfirmExit = () => {
+  const handleConfirmExit = (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (selectedUserId === null) return;
-
     confirmFeeMutation.mutate(selectedUserId);
-
     exitConfirmModal.closeModal();
     navigate({
       to: '/admin/checkout/$userId',
       params: { userId: selectedUserId },
     });
+  };
+
+  const handleConfirmEnableNomihodai = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (selectedUserId === null) return;
+    enableNomihodaiMutation.mutate(selectedUserId);
+    confirmEnableNomihodai.closeModal();
   };
 
   const splitProducts = (() => ({
@@ -107,11 +121,20 @@ function RouteComponent() {
               </td>
               <td>{user.fee}円</td>
               <td>
-                {user.isNomihodai ? (
-                  <Beer className="h-5 w-5 text-success ml-5" />
-                ) : (
-                  <BeerOff className="h-5 w-5 text-error ml-5" />
-                )}
+                <button
+                  className="btn btn-sm btn-square btn-ghost ml-3"
+                  disabled={user.isNomihodai || !user.isActive}
+                  onClick={() => {
+                    setSelectedUserId(user.id);
+                    confirmEnableNomihodai.openModal();
+                  }}
+                >
+                  {user.isNomihodai && user.isActive ? (
+                    <Beer className="h-5 w-5 text-success" />
+                  ) : (
+                    <BeerOff className="h-5 w-5 text-error" />
+                  )}
+                </button>
               </td>
               <td>
                 {user.isActive ? (
@@ -240,6 +263,38 @@ function RouteComponent() {
           </div>
         ))}
         <Divider direction="horizontal" />
+      </Modal>
+      <Modal modalId={confirmEnableNomihodai.id} className="px-5 py-7">
+        <Form
+          className="flex flex-col items-center gap-5"
+          onSubmit={handleConfirmEnableNomihodai}
+        >
+          <h3 className="text-2xl text-warning">確認</h3>
+          <Divider direction="horizontal" />
+          <p className="text-lg px-3 py-2">
+            飲み放題を有効にします。
+            <br />
+            よろしいですか？
+          </p>
+          <Divider direction="horizontal" />
+          <div className="flex justify-center items-center gap-3">
+            <Form.SubmitBtn
+              color="info"
+              disabled={enableNomihodaiMutation.isPending}
+            >
+              有効化
+            </Form.SubmitBtn>
+            <Button
+              option="outline"
+              onClick={() => {
+                confirmEnableNomihodai.closeModal();
+              }}
+              disabled={enableNomihodaiMutation.isPending}
+            >
+              キャンセル
+            </Button>
+          </div>
+        </Form>
       </Modal>
     </>
   );
