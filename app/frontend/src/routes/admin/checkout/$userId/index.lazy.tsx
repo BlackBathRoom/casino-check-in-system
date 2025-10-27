@@ -5,6 +5,7 @@ import {
   Timer as TimerIcon,
   User,
 } from 'lucide-react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import Divider from '@/components/layout/Divider';
 import Form from '@/components/ui/Form';
 import Button from '@/components/ui/Button';
@@ -13,25 +14,25 @@ import Modal from '@/components/ui/Modal';
 import { useModal } from '@/hooks/useModal';
 import Timer from '@/components/ui/Timer';
 import IconLabel from '@/components/ui/IconLabel';
+import { useFetchUserOptions, useLeaveUser } from '@/api/route/users';
+import Loading from '@/components/ui/Loading';
 
 export const Route = createLazyFileRoute('/admin/checkout/$userId/')({
   component: RouteComponent,
 });
 
-const user = {
-  name: 'hogehoge',
-  time: Datetime.now(),
-  fee: 3000,
-  isNomihodai: false,
-};
-
 function RouteComponent() {
   const modal = useModal('checkout-confirm-modal');
+  const { userId } = Route.useParams();
+  const { data: user } = useSuspenseQuery(useFetchUserOptions(userId));
+
+  const { mutate, isPending } = useLeaveUser();
 
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    mutate(userId);
     modal.closeModal();
     navigate({ to: '/admin/checkout' });
   };
@@ -60,7 +61,7 @@ function RouteComponent() {
             >
               <span>滞在時間</span>
             </IconLabel>
-            <Timer datetime={user.time} isRunning={false} />
+            <Timer datetime={Datetime.serialize(user.time)} isRunning={false} />
           </div>
           <div className="flex justify-between">
             <IconLabel
@@ -103,8 +104,12 @@ function RouteComponent() {
             </div>
           </div>
           <Divider direction="horizontal" />
-          <Form.SubmitBtn color="warning" onClick={modal.closeModal}>
-            退店処理を実行
+          <Form.SubmitBtn color="warning" disabled={isPending}>
+            {isPending ? (
+              <Loading size="md" color="primary" variety="bars" />
+            ) : (
+              '退店処理を実行'
+            )}
           </Form.SubmitBtn>
         </Form>
       </Modal>

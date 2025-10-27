@@ -5,31 +5,74 @@ import Form from '@/components/ui/Form';
 import { useModal } from '@/hooks/useModal';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
+import { useConfirmFee, useFindUser } from '@/api/route/users';
+import Loading from '@/components/ui/Loading';
 
 export const Route = createLazyFileRoute('/admin/checkout/')({
   component: RouteComponent,
 });
 
+type Message = {
+  type: 'info' | 'error';
+  message: string;
+};
+
 function RouteComponent() {
   const [userId, setUserId] = useState<string>('');
+  const [displayMessage, setDisplayMessage] = useState<Message>({
+    type: 'info',
+    message: 'ユーザーIDで対象ユーザーの検索を行います',
+  });
   const navigate = useNavigate();
+
+  const findUserMutation = useFindUser();
+  const confirmFeeMutation = useConfirmFee();
 
   const modal = useModal('checkout-confirm-modal');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    modal.openModal();
+
+    findUserMutation.mutate(userId, {
+      onSuccess: (data) => {
+        if (data.isActive) {
+          modal.openModal();
+        } else {
+          setDisplayMessage({
+            type: 'error',
+            message: '対象ユーザーは既に退店処理が完了しています。',
+          });
+        }
+      },
+      onError: () =>
+        setDisplayMessage({
+          type: 'error',
+          message: 'ユーザーが見つかりません。ユーザーIDをご確認ください。',
+        }),
+    });
   };
 
   const confirmCheckout = () => {
+    confirmFeeMutation.mutate(userId);
     modal.closeModal();
-    navigate({ to: '/admin/checkout/$userId', params: { userId } });
+    navigate({
+      to: '/admin/checkout/$userId',
+      params: { userId },
+    });
   };
 
   return (
     <>
       <Form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <h3 className="text-xl">ユーザーIDで対象ユーザーの検索を行います</h3>
+        <h3 className="text-xl">
+          <span
+            className={
+              displayMessage.type === 'info' ? 'text-info' : 'text-error'
+            }
+          >
+            {displayMessage.message}
+          </span>
+        </h3>
         <Divider direction="horizontal" />
         <div className="flex flex-col gap-2">
           <Form.Label htmlFor="userId">ユーザーID</Form.Label>
@@ -42,7 +85,13 @@ function RouteComponent() {
           />
         </div>
         <Divider direction="horizontal" />
-        <Form.SubmitBtn color="info">検索</Form.SubmitBtn>
+        <Form.SubmitBtn color="info" disabled={findUserMutation.isPending}>
+          {findUserMutation.isPending ? (
+            <Loading size="md" color="primary" variety="bars" />
+          ) : (
+            '検索'
+          )}
+        </Form.SubmitBtn>
       </Form>
       <Modal modalId={modal.id} className="px-5 py-7">
         <Form onSubmit={confirmCheckout} className="flex flex-col gap-3">
@@ -54,10 +103,10 @@ function RouteComponent() {
           </div>
           <Divider direction="horizontal" />
           <div className="flex justify-center items-center gap-3">
+            <Form.SubmitBtn color="warning">滞在料金を確定</Form.SubmitBtn>
             <Button option="outline" onClick={() => modal.closeModal()}>
               キャンセル
             </Button>
-            <Form.SubmitBtn color="warning">滞在料金を確定</Form.SubmitBtn>
           </div>
         </Form>
       </Modal>

@@ -6,6 +6,7 @@ import Form from '@/components/ui/Form';
 import Divider from '@/components/layout/Divider';
 import Notification from '@/components/ui/Notification';
 import IconLabel from '@/components/ui/IconLabel';
+import { useReenterUser, useRegisterUser } from '@/api/route/users';
 
 export const Route = createLazyFileRoute('/admin/checkin/')({
   component: RouteComponent,
@@ -22,23 +23,58 @@ const options: Array<Option> = [
 ];
 
 function RouteComponent() {
-  const param = Route.useSearch();
+  const searchParam = Route.useSearch();
 
-  const [name, setName] = useState<string>(param.userName ?? '');
+  const [info, setInfo] = useState<string>(searchParam.userId ?? '');
   const [selectedOption, setSelectedOption] = useState<Option>(
-    param.userName !== null ? options[1] : options[0]
+    searchParam.userId !== null ? options[1] : options[0]
   );
+
+  const registerMutation = useRegisterUser();
+  const reenterMutation = useReenterUser();
 
   const { addNotification, notificationItems } = useNotification();
 
   const handleCheckIn = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const demoUserId = '1234';
-
-    addNotification({ message: `ユーザーID: ${demoUserId}`, type: 'info' });
-
-    setName('');
+    if (selectedOption.id === 1) {
+      registerMutation.mutate(info, {
+        onSuccess: (data) =>
+          addNotification({
+            type: 'info',
+            message: `ユーザーID: ${data} のお客様を登録、入店処理が完了しました。`,
+          }),
+        onError: () =>
+          addNotification({
+            type: 'error',
+            message:
+              'ユーザー名の登録に失敗しました。ユーザー名が使用済みである可能性があります。',
+          }),
+      });
+    } else {
+      reenterMutation.mutate(info, {
+        onSuccess: () =>
+          addNotification({
+            type: 'info',
+            message: `ユーザーID: ${info} のお客様の入店処理が完了しました。`,
+          }),
+        onError: (error) => {
+          if (error.code === 400) {
+            addNotification({
+              type: 'error',
+              message: `ユーザーID: ${info} のお客様は既に入店中です。`,
+            });
+          } else {
+            addNotification({
+              type: 'error',
+              message: 'ユーザーIDが見つかりません。再度ご確認ください。',
+            });
+          }
+        },
+      });
+    }
+    setInfo('');
   };
 
   return (
@@ -77,13 +113,15 @@ function RouteComponent() {
               className="flex items-center gap-8 text-xl"
             />
             <div className="flex flex-col gap-3 mt-2">
-              <Form.Label htmlFor="customerName">顧客名</Form.Label>
+              <Form.Label htmlFor="customer">
+                {selectedOption.id === 1 ? '顧客名' : '顧客ID'}
+              </Form.Label>
               <Form.Input
-                id="name"
-                value={name}
-                setValue={setName}
+                id="customer"
+                value={info}
+                setValue={setInfo}
                 minLength={1}
-                maxLength={50}
+                maxLength={selectedOption.id === 1 ? 50 : 4}
                 className="w-full"
                 isRequired
               />

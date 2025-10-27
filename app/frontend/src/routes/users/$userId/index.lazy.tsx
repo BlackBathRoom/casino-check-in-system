@@ -6,31 +6,26 @@ import {
   HandCoins,
   Timer as TimerIcon,
 } from 'lucide-react';
-import type { User } from '@/types';
-import { Datetime } from '@/utils/time';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import Timer from '@/components/ui/Timer';
 import Button from '@/components/ui/Button';
 import Divider from '@/components/layout/Divider';
+import { useFetchUserOptions } from '@/api/route/users';
+import { Datetime } from '@/utils/time';
 
 export const Route = createLazyFileRoute('/users/$userId/')({
   component: RouteComponent,
 });
 
-const demoUser: Omit<User, 'status'> = {
-  id: '1234',
-  name: 'hogehoge',
-  time: Datetime.now(),
-  fee: 1000,
-  isNomihodai: true,
-  nomihodaiStartAt: Datetime.now(),
-};
-
 function RouteComponent() {
+  const { userId } = Route.useParams();
+  const { data: user } = useSuspenseQuery(useFetchUserOptions(userId));
+
   return (
     <div className="card card-border shadow-lg bg-base-100 w-full px-10 py-6 max-w-md md:max-w-3xl">
       <div className="card-title">
         <h2 className="text-3xl font-bold text-info pb-2 flex gap-1 mx-auto md:ml-0">
-          <span>{demoUser.name}</span>
+          <span>{user.name}</span>
           <span>様</span>
         </h2>
       </div>
@@ -42,7 +37,7 @@ function RouteComponent() {
               <span className="text-lg">経過時間</span>
             </div>
             <span className="text-xl md:text-2xl font-bold">
-              <Timer datetime={demoUser.time} isRunning />
+              <Timer datetime={Datetime.serialize(user.time)} isRunning />
             </span>
           </div>
           <div className="flex flex-col gap-1">
@@ -52,7 +47,7 @@ function RouteComponent() {
             </div>
             <div className="text-xl md:text-2xl font-bold w-full flex items-end">
               <span>¥</span>
-              <span>{demoUser.fee}</span>
+              <span>{user.fee}</span>
             </div>
           </div>
         </div>

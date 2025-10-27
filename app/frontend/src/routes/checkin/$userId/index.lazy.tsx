@@ -1,6 +1,8 @@
 import { Link, createLazyFileRoute } from '@tanstack/react-router';
 import { CircleCheck } from 'lucide-react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import Button from '@/components/ui/Button';
+import { useFetchUserOptions } from '@/api/route/users';
 
 export const Route = createLazyFileRoute('/checkin/$userId/')({
   component: RouteComponent,
@@ -8,6 +10,7 @@ export const Route = createLazyFileRoute('/checkin/$userId/')({
 
 function RouteComponent() {
   const params = Route.useParams();
+  const { data: user } = useSuspenseQuery(useFetchUserOptions(params.userId));
 
   return (
     <div className="card-body flex flex-col items-center gap-5">
@@ -18,13 +21,13 @@ function RouteComponent() {
       <div className="flex flex-col items-center gap-3 text-lg md:text-xl bg-info/30 px-5 py-7 rounded-sm w-full">
         <p className="flex gap-1 items-center">
           <span>いらっしゃいませ</span>
-          <span className="font-bold text-xl md:text-2xl">hogehoge</span>
+          <span className="font-bold text-xl md:text-2xl">{user.name}</span>
           <span>様</span>
         </p>
         <p className="flex gap-1 items-center">
           <span>ユーザーIDは</span>
           <span className="pb-2 text-info font-bold text-4xl md:text-5xl">
-            {params.userId}
+            {user.id}
           </span>
           <span>です。</span>
         </p>

@@ -7,67 +7,23 @@ import {
   ShoppingCart,
   Smile,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { cn } from '@/utils/cn';
 import IconLabel from '@/components/ui/IconLabel';
+import { useFetchOrders } from '@/api/route/orders';
 
 export const Route = createLazyFileRoute('/admin/sale/')({
   component: RouteComponent,
 });
 
-type Item = {
-  name: string;
-  customerName: string;
-  kind: 'drink' | 'tip';
-  isProvided: boolean;
-  price: number;
-};
-
-const _items: Array<Item> = [
-  {
-    name: 'ビール',
-    customerName: 'hogehoge',
-    kind: 'drink',
-    isProvided: true,
-    price: 600,
-  },
-  {
-    name: '800チップ',
-    customerName: 'fugafuga',
-    kind: 'tip',
-    isProvided: false,
-    price: 800,
-  },
-  {
-    name: 'カクテル',
-    customerName: 'piyopiyo',
-    kind: 'drink',
-    isProvided: true,
-    price: 700,
-  },
-  {
-    name: '500チップ',
-    customerName: 'hogehoge',
-    kind: 'tip',
-    isProvided: false,
-    price: 500,
-  },
-];
-
 function RouteComponent() {
   const param = Route.useSearch();
-  const [items, setItems] = useState<Array<Item>>(_items);
 
-  const displayItems =
-    param.isProvided !== null
-      ? items.filter((item) => item.isProvided === param.isProvided)
-      : items;
-
-  const switchIsProvided = (item: Item) => {
-    setItems((prev) =>
-      prev.map((i) => (i === item ? { ...i, isProvided: !i.isProvided } : i))
-    );
-  };
+  const { data: orders } = useSuspenseQuery(
+    useFetchOrders({
+      isProvided: param.isProvided === null ? undefined : param.isProvided,
+    })
+  );
 
   return (
     <>
@@ -95,7 +51,7 @@ function RouteComponent() {
               <h3 className="card-title text-2xl text-error mx-auto">未提供</h3>
               <div className="flex w-full justify-center items-center p-1">
                 <span className="text-5xl text-warning">
-                  {items.filter((item) => !item.isProvided).length}
+                  {orders.filter((order) => !order.isProvided).length}
                 </span>
               </div>
             </div>
@@ -105,7 +61,7 @@ function RouteComponent() {
               <h3 className="card-title text-2xl text-error mx-auto">総売上</h3>
               <div className="flex w-full items-center gap-1 p-1">
                 <span className="text-5xl text-info">
-                  {items.reduce((acc, item) => acc + item.price, 0)}
+                  {orders.reduce((acc, order) => acc + order.price, 0)}
                 </span>
                 <span className="text-xl mt-auto mb-0">円</span>
               </div>
@@ -156,12 +112,12 @@ function RouteComponent() {
               </tr>
             </thead>
             <tbody className="table-row-group border-t-2 bg-base-100">
-              {displayItems.map((item, idx) => (
+              {orders.map((order, idx) => (
                 <tr key={idx} className="border-t-1 border-black">
-                  <td>{item.name}</td>
-                  <td>{item.customerName}</td>
+                  <td>{order.productName}</td>
+                  <td>{order.customerName}</td>
                   <td>
-                    {item.kind === 'drink' ? (
+                    {order.productCategory === 'drink' ? (
                       <CupSoda className="text-cyan-400" />
                     ) : (
                       <CirclePoundSterling className="text-amber-300" />
@@ -169,7 +125,7 @@ function RouteComponent() {
                   </td>
                   <td>
                     <div className="flex gap-2 items-center">
-                      {item.isProvided ? (
+                      {order.isProvided ? (
                         <>
                           <Smile className="text-success" />
                           <span className="text-success">提供済み</span>
@@ -186,9 +142,8 @@ function RouteComponent() {
                     <button
                       className={cn(
                         'btn btn-sm btn-square ml-7',
-                        item.isProvided ? 'btn-success' : 'btn-error'
+                        order.isProvided ? 'btn-success' : 'btn-error'
                       )}
-                      onClick={() => switchIsProvided(item)}
                     >
                       <Check className="w-4 h-4" />
                     </button>
