@@ -5,6 +5,7 @@ import Form from '@/components/ui/Form';
 import Divider from '@/components/layout/Divider';
 import IconLabel from '@/components/ui/IconLabel';
 import { useReenterUser, useRegisterUser } from '@/api/route/users';
+import { useAdminNotification } from '@/contexts/adminNotification';
 
 export const Route = createLazyFileRoute('/admin/checkin/')({
   component: RouteComponent,
@@ -22,9 +23,7 @@ const options: Array<Option> = [
 
 function RouteComponent() {
   const searchParam = Route.useSearch();
-  const {
-    notification: { addNotification },
-  } = Route.useRouteContext();
+  const { addNotification } = useAdminNotification();
 
   const [info, setInfo] = useState<string>(searchParam.userId ?? '');
   const [selectedOption, setSelectedOption] = useState<Option>(

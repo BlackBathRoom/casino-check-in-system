@@ -2,25 +2,22 @@ import { Outlet, createFileRoute } from '@tanstack/react-router';
 import { BadgeInfo, CircleX } from 'lucide-react';
 import { useNotification } from '@/hooks/useNotification';
 import Notification from '@/components/ui/Notification';
+import { AdminNotificationProvider } from '@/contexts/adminNotification';
 
 export const Route = createFileRoute('/admin')({
-  context: () => {
-    const notification = useNotification();
-    return { notification };
-  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const {
-    notification: { notificationItems },
-  } = Route.useRouteContext();
+  const notification = useNotification();
 
   return (
     <div className="flex flex-col h-full py-10 w-full lg:max-w-3xl gap-6 mx-auto">
-      <Outlet />
+      <AdminNotificationProvider value={notification}>
+        <Outlet />
+      </AdminNotificationProvider>
       <Notification>
-        {notificationItems.map((item) => (
+        {notification.notificationItems.map((item) => (
           <Notification.Alert
             key={item.id}
             color={item.type}
