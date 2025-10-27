@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { cn } from '@/utils/cn';
-import { useFetchOrders, useSwitchProvidedStatus } from '@/api/route/orders';
+import { useFetchOrders, useSwitchProvidedStatus } from '@/api/routes/orders';
 
 export const Route = createLazyFileRoute('/admin/sale/')({
   component: RouteComponent,

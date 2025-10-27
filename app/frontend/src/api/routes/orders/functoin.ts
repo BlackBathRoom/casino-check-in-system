@@ -1,7 +1,7 @@
 import type {
   OrderQueryParams,
   RegisterOrderBody,
-} from '@/api/route/orders/type';
+} from '@/api/routes/orders/type';
 import { client } from '@/api/shared/apiClient';
 import { ApiError } from '@/api/shared/apiError';
 import { convertBoolToStr } from '@/api/shared/convertQueryParam';

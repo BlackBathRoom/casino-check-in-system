@@ -5,7 +5,7 @@ import Form from '@/components/ui/Form';
 import { useModal } from '@/hooks/useModal';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
-import { useConfirmFee, useFindUser } from '@/api/route/users';
+import { useConfirmFee, useFindUser } from '@/api/routes/users';
 import Loading from '@/components/ui/Loading';
 
 export const Route = createLazyFileRoute('/admin/checkout/')({

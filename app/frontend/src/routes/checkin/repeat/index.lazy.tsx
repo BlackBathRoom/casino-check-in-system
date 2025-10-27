@@ -4,7 +4,7 @@ import { CircleX } from 'lucide-react';
 import Divider from '@/components/layout/Divider';
 import Form from '@/components/ui/Form';
 import Button from '@/components/ui/Button';
-import { useReenterUser } from '@/api/route/users';
+import { useReenterUser } from '@/api/routes/users';
 import { useNotification } from '@/hooks/useNotification';
 import Notification from '@/components/ui/Notification';
 

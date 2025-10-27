@@ -14,7 +14,7 @@ import Modal from '@/components/ui/Modal';
 import { useModal } from '@/hooks/useModal';
 import Timer from '@/components/ui/Timer';
 import IconLabel from '@/components/ui/IconLabel';
-import { useFetchUserOptions, useLeaveUser } from '@/api/route/users';
+import { useFetchUserOptions, useLeaveUser } from '@/api/routes/users';
 import Loading from '@/components/ui/Loading';
 
 export const Route = createLazyFileRoute('/admin/checkout/$userId/')({

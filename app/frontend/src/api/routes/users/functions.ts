@@ -1,4 +1,7 @@
-import type { RegisterUserBody, UserQueryParams } from '@/api/route/users/type';
+import type {
+  RegisterUserBody,
+  UserQueryParams,
+} from '@/api/routes/users/type';
 import { client } from '@/api/shared/apiClient';
 import { ApiError } from '@/api/shared/apiError';
 import { convertBoolToStr } from '@/api/shared/convertQueryParam';

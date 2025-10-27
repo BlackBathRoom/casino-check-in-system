@@ -1,4 +1,4 @@
-import type { UserQueryParams } from '@/api/route/users/type';
+import type { UserQueryParams } from '@/api/routes/users/type';
 
 export const usersKey = {
   all: ['users'] as const,

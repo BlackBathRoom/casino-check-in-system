@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Form from '@/components/ui/Form';
 import Divider from '@/components/layout/Divider';
 import IconLabel from '@/components/ui/IconLabel';
-import { useReenterUser, useRegisterUser } from '@/api/route/users';
+import { useReenterUser, useRegisterUser } from '@/api/routes/users';
 import { useAdminNotification } from '@/contexts/adminNotification';
 
 export const Route = createLazyFileRoute('/admin/checkin/')({

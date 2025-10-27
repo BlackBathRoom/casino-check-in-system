@@ -6,14 +6,14 @@ import {
 import type {
   OrderQueryParams,
   RegisterOrderBody,
-} from '@/api/route/orders/type';
-import { ordersKey } from '@/api/route/orders/key';
+} from '@/api/routes/orders/type';
+import { ordersKey } from '@/api/routes/orders/key';
 import {
   fetchOrders,
   registerOrder,
   switchProvidedStatus,
-} from '@/api/route/orders/functoin';
-import { usersKey } from '@/api/route/users/key';
+} from '@/api/routes/orders/functoin';
+import { usersKey } from '@/api/routes/users/key';
 
 const useFetchOrders = (params?: OrderQueryParams) =>
   queryOptions({

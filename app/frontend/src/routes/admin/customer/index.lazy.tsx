@@ -23,9 +23,9 @@ import {
   useConfirmFee,
   useEnableNomihodai,
   useFetchUsersOptions,
-} from '@/api/route/users';
-import { useFetchProductsOptions } from '@/api/route/products';
-import { useRegisterOrder } from '@/api/route/orders';
+} from '@/api/routes/users';
+import { useFetchProductsOptions } from '@/api/routes/products';
+import { useRegisterOrder } from '@/api/routes/orders';
 
 export const Route = createLazyFileRoute('/admin/customer/')({
   pendingComponent: () => <div className="w-full h-60 skeleton"></div>,

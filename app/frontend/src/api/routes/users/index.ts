@@ -3,8 +3,8 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import type { UserQueryParams } from '@/api/route/users/type';
-import { usersKey } from '@/api/route/users/key';
+import type { UserQueryParams } from '@/api/routes/users/type';
+import { usersKey } from '@/api/routes/users/key';
 import {
   confirmFee,
   enableNomihodai,
@@ -13,7 +13,7 @@ import {
   leave,
   reenter,
   registerUser,
-} from '@/api/route/users/functions';
+} from '@/api/routes/users/functions';
 
 const useFetchUserOptions = (userId: string) =>
   queryOptions({

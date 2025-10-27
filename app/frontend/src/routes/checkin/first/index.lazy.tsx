@@ -6,7 +6,7 @@ import Divider from '@/components/layout/Divider';
 import Button from '@/components/ui/Button';
 import { useNotification } from '@/hooks/useNotification';
 import Notification from '@/components/ui/Notification';
-import { useRegisterUser } from '@/api/route/users';
+import { useRegisterUser } from '@/api/routes/users';
 
 export const Route = createLazyFileRoute('/checkin/first/')({
   component: RouteComponent,

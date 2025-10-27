@@ -1,4 +1,4 @@
-import type { OrderQueryParams } from '@/api/route/orders/type';
+import type { OrderQueryParams } from '@/api/routes/orders/type';
 
 export const ordersKey = {
   all: ['orders'] as const,

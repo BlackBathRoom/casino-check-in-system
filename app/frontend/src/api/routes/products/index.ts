@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
-import { productsKey } from '@/api/route/products/key';
-import { fetchProducts } from '@/api/route/products/function';
+import { productsKey } from '@/api/routes/products/key';
+import { fetchProducts } from '@/api/routes/products/function';
 
 const useFetchProductsOptions = () =>
   queryOptions({

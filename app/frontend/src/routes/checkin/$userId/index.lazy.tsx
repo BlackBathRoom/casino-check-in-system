@@ -2,7 +2,7 @@ import { Link, createLazyFileRoute } from '@tanstack/react-router';
 import { CircleCheck } from 'lucide-react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Button from '@/components/ui/Button';
-import { useFetchUserOptions } from '@/api/route/users';
+import { useFetchUserOptions } from '@/api/routes/users';
 
 export const Route = createLazyFileRoute('/checkin/$userId/')({
   component: RouteComponent,

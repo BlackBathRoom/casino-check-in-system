@@ -10,7 +10,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import Timer from '@/components/ui/Timer';
 import Button from '@/components/ui/Button';
 import Divider from '@/components/layout/Divider';
-import { useFetchUserOptions } from '@/api/route/users';
+import { useFetchUserOptions } from '@/api/routes/users';
 import { Datetime } from '@/utils/time';
 
 export const Route = createLazyFileRoute('/users/$userId/')({
