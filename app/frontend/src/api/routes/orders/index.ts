@@ -12,7 +12,7 @@ import {
   fetchOrders,
   registerOrder,
   switchProvidedStatus,
-} from '@/api/routes/orders/functoin';
+} from '@/api/routes/orders/function';
 import { usersKey } from '@/api/routes/users/key';
 
 const useFetchOrders = (params?: OrderQueryParams) =>
