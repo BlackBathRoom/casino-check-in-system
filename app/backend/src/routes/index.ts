@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { websocket } from 'hono/bun';
 import { cors } from 'hono/cors';
 import { jwt } from 'hono/jwt';
 import { logger } from 'hono/logger';
@@ -9,6 +10,7 @@ import authRoute from '@/routes/auth';
 import ordersRoute from '@/routes/orders';
 import productsRoute from '@/routes/products';
 import usersRoute from '@/routes/users';
+import websocketRoute from '@/routes/websocket';
 
 const protectedRoutes = new Hono()
   .use('*', async (c, next) => {
@@ -18,7 +20,8 @@ const protectedRoutes = new Hono()
   .use('*', jwt({ secret: process.env.SECRET_KEY, cookie: AUTH_COOKIE_NAME }))
   .route('/orders', ordersRoute)
   .route('/products', productsRoute)
-  .route('/users', usersRoute);
+  .route('/users', usersRoute)
+  .route('/', websocketRoute);
 
 const app = new Hono()
   .basePath('/api')
@@ -56,5 +59,6 @@ export type AppType = typeof app;
 
 export default {
   fetch: app.fetch,
+  websocket,
   port: 3000,
 };

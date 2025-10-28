@@ -11,3 +11,5 @@ export const client = hc<AppType>('http://localhost:3000', {
       },
     }),
 }).api;
+
+export const socket = client.ws.$ws();

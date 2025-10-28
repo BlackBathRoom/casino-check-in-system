@@ -1,5 +1,12 @@
 import { db } from '@/lib/database';
 
+const getProduct = async (productId: number) =>
+  await db
+    .selectFrom('products')
+    .selectAll()
+    .where('id', '=', productId)
+    .executeTakeFirstOrThrow();
+
 const getProducts = async () =>
   await db.selectFrom('products').selectAll().execute();
 
@@ -12,4 +19,4 @@ const getPrice = async (productId: number) =>
       .executeTakeFirstOrThrow()
   ).price;
 
-export { getPrice, getProducts };
+export { getPrice, getProduct, getProducts };

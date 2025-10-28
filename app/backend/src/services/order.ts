@@ -1,18 +1,22 @@
 import { registerOrder } from '@/lib/database/orders';
-import { getPrice } from '@/lib/database/products';
+import { getProduct } from '@/lib/database/products';
 import { addFee, getNomihodaiEndAt } from '@/lib/database/users';
 import { isAvailableNomihodai } from '@/services/nomihodai';
-
-const payment = async (userId: string, productId: number) => {
-  const nomihodaiEndAt = await getNomihodaiEndAt(userId);
-  if (!isAvailableNomihodai(nomihodaiEndAt)) {
-    const price = await getPrice(productId);
-    await addFee(userId, price);
-  }
-};
+import { notificationOrderManager } from '@/services/notificationOrder';
 
 const processOrder = async (userId: string, productId: number) => {
-  await payment(userId, productId);
+  const nomihodaiEndAt = await getNomihodaiEndAt(userId);
+  const product = await getProduct(productId);
+
+  if (!isAvailableNomihodai(nomihodaiEndAt)) {
+    await addFee(userId, product.price);
+  }
+
+  notificationOrderManager.notifyAdmins({
+    productType: product.category,
+    itemName: product.name,
+  });
+
   await registerOrder(userId, productId);
 };
 

@@ -20,27 +20,29 @@ const route = new Hono()
 
     return c.json(
       {
-        orders: orders.map((order) => ({
-          ...order,
-          customerName:
-            users.find((user) => user.id === order.userId)?.name ?? '不明',
-          ...(() => {
-            const product = products.find(
-              (product) => product.id === order.productId
-            );
-            return !product
-              ? {
-                  productName: '不明',
-                  productCategory: 'other',
-                  price: 0,
-                }
-              : {
-                  productName: product.name,
-                  productCategory: product.category,
-                  price: product.price,
-                };
-          })(),
-        })),
+        orders: orders
+          .map((order) => ({
+            ...order,
+            customerName:
+              users.find((user) => user.id === order.userId)?.name ?? '不明',
+            ...(() => {
+              const product = products.find(
+                (product) => product.id === order.productId
+              );
+              return !product
+                ? {
+                    productName: '不明',
+                    productCategory: 'other',
+                    price: 0,
+                  }
+                : {
+                    productName: product.name,
+                    productCategory: product.category,
+                    price: product.price,
+                  };
+            })(),
+          }))
+          .reverse(),
       },
       200
     );
