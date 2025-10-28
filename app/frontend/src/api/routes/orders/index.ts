@@ -33,6 +33,9 @@ const useRegisterOrder = () => {
       queryClient.invalidateQueries({
         queryKey: usersKey.lists(),
       });
+      queryClient.invalidateQueries({
+        queryKey: usersKey.details(),
+      });
     },
   });
 };

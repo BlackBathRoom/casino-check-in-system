@@ -54,7 +54,7 @@ const Timer: React.FC<Props> = ({ datetime, isRunning, className }) => {
       ? `${hoursLabel}:${minutesLabel}`
       : `${minutesLabel}:${secondsLabel}`;
 
-  return <span className={className}>{display}</span>;
+  return <span className={className}>{isRunning ? display : '--:--'}</span>;
 };
 
 export default Timer;
