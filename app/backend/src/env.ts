@@ -20,13 +20,15 @@ const zNumVar = z.preprocess((val) => {
 }, z.number());
 
 const zEnv = z.object({
+  ADMIN_NAME: zStrVar,
+  ADMIN_PASSWORD: zStrVar,
+  SECRET_KEY: zStrVar,
+  EXPIRATION_TIME: zNumVar,
   DATABASE_HOST: zStrVar,
   DATABASE_PORT: zNumVar,
   DATABASE_USER: zStrVar,
   DATABASE_PASSWORD: zStrVar,
   DATABASE_NAME: zStrVar,
-  REDIS_HOST: zStrVar,
-  REDIS_PORT: zNumVar,
 });
 
 try {

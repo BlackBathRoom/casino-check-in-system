@@ -14,23 +14,24 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as CheckinRouteRouteImport } from './routes/checkin/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
-import { Route as RouteRouteImport } from './routes/route'
 import { Route as UsersUserIdRouteRouteImport } from './routes/users/$userId/route'
 import { Route as CheckinUserIdRouteRouteImport } from './routes/checkin/$userId/route'
 import { Route as AdminSaleRouteRouteImport } from './routes/admin/sale/route'
+import { Route as AdminLoginRouteRouteImport } from './routes/admin/login/route'
 import { Route as AdminCustomerRouteRouteImport } from './routes/admin/customer/route'
 import { Route as AdminCheckoutRouteRouteImport } from './routes/admin/checkout/route'
 import { Route as AdminCheckinRouteRouteImport } from './routes/admin/checkin/route'
-import { Route as UsersLoginIndexRouteImport } from './routes/users/login/index'
 import { Route as AdminCheckoutUserIdRouteRouteImport } from './routes/admin/checkout/$userId/route'
 
 const CheckinIndexLazyRouteImport = createFileRoute('/checkin/')()
 const AdminIndexLazyRouteImport = createFileRoute('/admin/')()
+const UsersLoginIndexLazyRouteImport = createFileRoute('/users/login/')()
 const UsersUserIdIndexLazyRouteImport = createFileRoute('/users/$userId/')()
 const CheckinRepeatIndexLazyRouteImport = createFileRoute('/checkin/repeat/')()
 const CheckinFirstIndexLazyRouteImport = createFileRoute('/checkin/first/')()
 const CheckinUserIdIndexLazyRouteImport = createFileRoute('/checkin/$userId/')()
 const AdminSaleIndexLazyRouteImport = createFileRoute('/admin/sale/')()
+const AdminLoginIndexLazyRouteImport = createFileRoute('/admin/login/')()
 const AdminCustomerIndexLazyRouteImport = createFileRoute('/admin/customer/')()
 const AdminCheckoutIndexLazyRouteImport = createFileRoute('/admin/checkout/')()
 const AdminCheckinIndexLazyRouteImport = createFileRoute('/admin/checkin/')()
@@ -51,11 +52,6 @@ const CheckinRouteRoute = CheckinRouteRouteImport.update({
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RouteRoute = RouteRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckinIndexLazyRoute = CheckinIndexLazyRouteImport.update({
@@ -83,6 +79,11 @@ const AdminSaleRouteRoute = AdminSaleRouteRouteImport.update({
   path: '/sale',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminLoginRouteRoute = AdminLoginRouteRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminCustomerRouteRoute = AdminCustomerRouteRouteImport.update({
   id: '/customer',
   path: '/customer',
@@ -98,6 +99,13 @@ const AdminCheckinRouteRoute = AdminCheckinRouteRouteImport.update({
   path: '/checkin',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const UsersLoginIndexLazyRoute = UsersLoginIndexLazyRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => UsersRouteRoute,
+} as any).lazy(() =>
+  import('./routes/users/login/index.lazy').then((d) => d.Route),
+)
 const UsersUserIdIndexLazyRoute = UsersUserIdIndexLazyRouteImport.update({
   id: '/',
   path: '/',
@@ -133,6 +141,13 @@ const AdminSaleIndexLazyRoute = AdminSaleIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/admin/sale/index.lazy').then((d) => d.Route),
 )
+const AdminLoginIndexLazyRoute = AdminLoginIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminLoginRouteRoute,
+} as any).lazy(() =>
+  import('./routes/admin/login/index.lazy').then((d) => d.Route),
+)
 const AdminCustomerIndexLazyRoute = AdminCustomerIndexLazyRouteImport.update({
   id: '/',
   path: '/',
@@ -154,11 +169,6 @@ const AdminCheckinIndexLazyRoute = AdminCheckinIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/admin/checkin/index.lazy').then((d) => d.Route),
 )
-const UsersLoginIndexRoute = UsersLoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
-  getParentRoute: () => UsersRouteRoute,
-} as any)
 const AdminCheckoutUserIdRouteRoute =
   AdminCheckoutUserIdRouteRouteImport.update({
     id: '/$userId',
@@ -175,143 +185,146 @@ const AdminCheckoutUserIdIndexLazyRoute =
   )
 
 export interface FileRoutesByFullPath {
-  '/': typeof RouteRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/admin/checkin': typeof AdminCheckinRouteRouteWithChildren
   '/admin/checkout': typeof AdminCheckoutRouteRouteWithChildren
   '/admin/customer': typeof AdminCustomerRouteRouteWithChildren
+  '/admin/login': typeof AdminLoginRouteRouteWithChildren
   '/admin/sale': typeof AdminSaleRouteRouteWithChildren
   '/checkin/$userId': typeof CheckinUserIdRouteRouteWithChildren
   '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
   '/admin/checkout/$userId': typeof AdminCheckoutUserIdRouteRouteWithChildren
-  '/users/login': typeof UsersLoginIndexRoute
   '/admin/checkin/': typeof AdminCheckinIndexLazyRoute
   '/admin/checkout/': typeof AdminCheckoutIndexLazyRoute
   '/admin/customer/': typeof AdminCustomerIndexLazyRoute
+  '/admin/login/': typeof AdminLoginIndexLazyRoute
   '/admin/sale/': typeof AdminSaleIndexLazyRoute
   '/checkin/$userId/': typeof CheckinUserIdIndexLazyRoute
   '/checkin/first': typeof CheckinFirstIndexLazyRoute
   '/checkin/repeat': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId/': typeof UsersUserIdIndexLazyRoute
+  '/users/login': typeof UsersLoginIndexLazyRoute
   '/admin/checkout/$userId/': typeof AdminCheckoutUserIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof RouteRoute
   '/users': typeof UsersRouteRouteWithChildren
   '/admin': typeof AdminIndexLazyRoute
   '/checkin': typeof CheckinIndexLazyRoute
-  '/users/login': typeof UsersLoginIndexRoute
   '/admin/checkin': typeof AdminCheckinIndexLazyRoute
   '/admin/checkout': typeof AdminCheckoutIndexLazyRoute
   '/admin/customer': typeof AdminCustomerIndexLazyRoute
+  '/admin/login': typeof AdminLoginIndexLazyRoute
   '/admin/sale': typeof AdminSaleIndexLazyRoute
   '/checkin/$userId': typeof CheckinUserIdIndexLazyRoute
   '/checkin/first': typeof CheckinFirstIndexLazyRoute
   '/checkin/repeat': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId': typeof UsersUserIdIndexLazyRoute
+  '/users/login': typeof UsersLoginIndexLazyRoute
   '/admin/checkout/$userId': typeof AdminCheckoutUserIdIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof RouteRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/checkin': typeof CheckinRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/admin/checkin': typeof AdminCheckinRouteRouteWithChildren
   '/admin/checkout': typeof AdminCheckoutRouteRouteWithChildren
   '/admin/customer': typeof AdminCustomerRouteRouteWithChildren
+  '/admin/login': typeof AdminLoginRouteRouteWithChildren
   '/admin/sale': typeof AdminSaleRouteRouteWithChildren
   '/checkin/$userId': typeof CheckinUserIdRouteRouteWithChildren
   '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
   '/admin/': typeof AdminIndexLazyRoute
   '/checkin/': typeof CheckinIndexLazyRoute
   '/admin/checkout/$userId': typeof AdminCheckoutUserIdRouteRouteWithChildren
-  '/users/login/': typeof UsersLoginIndexRoute
   '/admin/checkin/': typeof AdminCheckinIndexLazyRoute
   '/admin/checkout/': typeof AdminCheckoutIndexLazyRoute
   '/admin/customer/': typeof AdminCustomerIndexLazyRoute
+  '/admin/login/': typeof AdminLoginIndexLazyRoute
   '/admin/sale/': typeof AdminSaleIndexLazyRoute
   '/checkin/$userId/': typeof CheckinUserIdIndexLazyRoute
   '/checkin/first/': typeof CheckinFirstIndexLazyRoute
   '/checkin/repeat/': typeof CheckinRepeatIndexLazyRoute
   '/users/$userId/': typeof UsersUserIdIndexLazyRoute
+  '/users/login/': typeof UsersLoginIndexLazyRoute
   '/admin/checkout/$userId/': typeof AdminCheckoutUserIdIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/admin'
     | '/checkin'
     | '/users'
     | '/admin/checkin'
     | '/admin/checkout'
     | '/admin/customer'
+    | '/admin/login'
     | '/admin/sale'
     | '/checkin/$userId'
     | '/users/$userId'
     | '/admin/'
     | '/checkin/'
     | '/admin/checkout/$userId'
-    | '/users/login'
     | '/admin/checkin/'
     | '/admin/checkout/'
     | '/admin/customer/'
+    | '/admin/login/'
     | '/admin/sale/'
     | '/checkin/$userId/'
     | '/checkin/first'
     | '/checkin/repeat'
     | '/users/$userId/'
+    | '/users/login'
     | '/admin/checkout/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/users'
     | '/admin'
     | '/checkin'
-    | '/users/login'
     | '/admin/checkin'
     | '/admin/checkout'
     | '/admin/customer'
+    | '/admin/login'
     | '/admin/sale'
     | '/checkin/$userId'
     | '/checkin/first'
     | '/checkin/repeat'
     | '/users/$userId'
+    | '/users/login'
     | '/admin/checkout/$userId'
   id:
     | '__root__'
-    | '/'
     | '/admin'
     | '/checkin'
     | '/users'
     | '/admin/checkin'
     | '/admin/checkout'
     | '/admin/customer'
+    | '/admin/login'
     | '/admin/sale'
     | '/checkin/$userId'
     | '/users/$userId'
     | '/admin/'
     | '/checkin/'
     | '/admin/checkout/$userId'
-    | '/users/login/'
     | '/admin/checkin/'
     | '/admin/checkout/'
     | '/admin/customer/'
+    | '/admin/login/'
     | '/admin/sale/'
     | '/checkin/$userId/'
     | '/checkin/first/'
     | '/checkin/repeat/'
     | '/users/$userId/'
+    | '/users/login/'
     | '/admin/checkout/$userId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  RouteRoute: typeof RouteRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   CheckinRouteRoute: typeof CheckinRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
@@ -338,13 +351,6 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof RouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkin/': {
@@ -382,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSaleRouteRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/customer': {
       id: '/admin/customer'
       path: '/customer'
@@ -402,6 +415,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/checkin'
       preLoaderRoute: typeof AdminCheckinRouteRouteImport
       parentRoute: typeof AdminRouteRoute
+    }
+    '/users/login/': {
+      id: '/users/login/'
+      path: '/login'
+      fullPath: '/users/login'
+      preLoaderRoute: typeof UsersLoginIndexLazyRouteImport
+      parentRoute: typeof UsersRouteRoute
     }
     '/users/$userId/': {
       id: '/users/$userId/'
@@ -438,6 +458,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSaleIndexLazyRouteImport
       parentRoute: typeof AdminSaleRouteRoute
     }
+    '/admin/login/': {
+      id: '/admin/login/'
+      path: '/'
+      fullPath: '/admin/login/'
+      preLoaderRoute: typeof AdminLoginIndexLazyRouteImport
+      parentRoute: typeof AdminLoginRouteRoute
+    }
     '/admin/customer/': {
       id: '/admin/customer/'
       path: '/'
@@ -458,13 +485,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/checkin/'
       preLoaderRoute: typeof AdminCheckinIndexLazyRouteImport
       parentRoute: typeof AdminCheckinRouteRoute
-    }
-    '/users/login/': {
-      id: '/users/login/'
-      path: '/login'
-      fullPath: '/users/login'
-      preLoaderRoute: typeof UsersLoginIndexRouteImport
-      parentRoute: typeof UsersRouteRoute
     }
     '/admin/checkout/$userId': {
       id: '/admin/checkout/$userId'
@@ -532,6 +552,18 @@ const AdminCustomerRouteRouteChildren: AdminCustomerRouteRouteChildren = {
 const AdminCustomerRouteRouteWithChildren =
   AdminCustomerRouteRoute._addFileChildren(AdminCustomerRouteRouteChildren)
 
+interface AdminLoginRouteRouteChildren {
+  AdminLoginIndexLazyRoute: typeof AdminLoginIndexLazyRoute
+}
+
+const AdminLoginRouteRouteChildren: AdminLoginRouteRouteChildren = {
+  AdminLoginIndexLazyRoute: AdminLoginIndexLazyRoute,
+}
+
+const AdminLoginRouteRouteWithChildren = AdminLoginRouteRoute._addFileChildren(
+  AdminLoginRouteRouteChildren,
+)
+
 interface AdminSaleRouteRouteChildren {
   AdminSaleIndexLazyRoute: typeof AdminSaleIndexLazyRoute
 }
@@ -548,6 +580,7 @@ interface AdminRouteRouteChildren {
   AdminCheckinRouteRoute: typeof AdminCheckinRouteRouteWithChildren
   AdminCheckoutRouteRoute: typeof AdminCheckoutRouteRouteWithChildren
   AdminCustomerRouteRoute: typeof AdminCustomerRouteRouteWithChildren
+  AdminLoginRouteRoute: typeof AdminLoginRouteRouteWithChildren
   AdminSaleRouteRoute: typeof AdminSaleRouteRouteWithChildren
   AdminIndexLazyRoute: typeof AdminIndexLazyRoute
 }
@@ -556,6 +589,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminCheckinRouteRoute: AdminCheckinRouteRouteWithChildren,
   AdminCheckoutRouteRoute: AdminCheckoutRouteRouteWithChildren,
   AdminCustomerRouteRoute: AdminCustomerRouteRouteWithChildren,
+  AdminLoginRouteRoute: AdminLoginRouteRouteWithChildren,
   AdminSaleRouteRoute: AdminSaleRouteRouteWithChildren,
   AdminIndexLazyRoute: AdminIndexLazyRoute,
 }
@@ -606,12 +640,12 @@ const UsersUserIdRouteRouteWithChildren =
 
 interface UsersRouteRouteChildren {
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRouteWithChildren
-  UsersLoginIndexRoute: typeof UsersLoginIndexRoute
+  UsersLoginIndexLazyRoute: typeof UsersLoginIndexLazyRoute
 }
 
 const UsersRouteRouteChildren: UsersRouteRouteChildren = {
   UsersUserIdRouteRoute: UsersUserIdRouteRouteWithChildren,
-  UsersLoginIndexRoute: UsersLoginIndexRoute,
+  UsersLoginIndexLazyRoute: UsersLoginIndexLazyRoute,
 }
 
 const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
@@ -619,7 +653,6 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  RouteRoute: RouteRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   CheckinRouteRoute: CheckinRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,

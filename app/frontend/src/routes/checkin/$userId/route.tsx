@@ -1,5 +1,5 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router';
-import { useFetchUserOptions } from '@/api/route/users';
+import { useFetchUserOptions } from '@/api/routes/users';
 
 export const Route = createFileRoute('/checkin/$userId')({
   loader: async ({ params, context: { queryClient } }) =>

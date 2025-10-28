@@ -1,14 +1,31 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router';
+import { Outlet, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { BadgeInfo, CircleX } from 'lucide-react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNotification } from '@/hooks/useNotification';
 import Notification from '@/components/ui/Notification';
 import { AdminNotificationProvider } from '@/contexts/adminNotification';
+import { useAuthOptions } from '@/api/routes/auth';
 
 export const Route = createFileRoute('/admin')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const { data: auth } = useSuspenseQuery(useAuthOptions());
+
+  if (auth === null) {
+    navigate({
+      to: '/admin/login',
+    });
+  } else {
+    if (auth.role === 'user') {
+      navigate({
+        to: '/users/$userId',
+        params: { userId: auth.password },
+      });
+    }
+  }
   const notification = useNotification();
 
   return (
