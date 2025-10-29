@@ -24,7 +24,7 @@ services:
     env_file:
       - ./../.env
     ports:
-      - '12345:3157'
+      - '80:3157'
     volumes:
       - ./../:/app
     command: /bin/bash -lc "cd /app && bun install && cd app/frontend && bun run build ; bun run serve"
