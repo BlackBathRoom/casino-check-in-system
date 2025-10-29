@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite --port 3157",
     "build": "vite build && tsc",
-    "serve": "vite preview",
+    "serve": "vite preview --port 3157",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier --write .",

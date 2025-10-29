@@ -1,7 +1,9 @@
 import { hc } from 'hono/client';
 import type { AppType } from '@backend/routes';
 
-export const client = hc<AppType>('http://localhost:3000', {
+const apiBaseUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+
+export const client = hc<AppType>(apiBaseUrl, {
   fetch: async (req: string | Request | URL, init: RequestInit | undefined) =>
     await fetch(req, {
       ...init,

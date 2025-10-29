@@ -15,10 +15,17 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      '@backend': resolve(__dirname, './../backend/src'),
     },
   },
   server: {
     port: 3157,
     host: true,
+    strictPort: true,
+  },
+  preview: {
+    port: 3157,
+    host: true,
+    strictPort: true,
   },
 });

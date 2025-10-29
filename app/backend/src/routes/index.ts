@@ -28,7 +28,7 @@ const app = new Hono()
   .use(
     '*',
     cors({
-      origin: ['http://localhost:3157'],
+      origin: ['http://localhost:3157', process.env.APP_URL],
       credentials: true,
     })
   )

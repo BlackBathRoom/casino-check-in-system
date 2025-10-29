@@ -20,6 +20,7 @@ const zNumVar = z.preprocess((val) => {
 }, z.number());
 
 const zEnv = z.object({
+  APP_URL: zStrVar,
   ADMIN_NAME: zStrVar,
   ADMIN_PASSWORD: zStrVar,
   SECRET_KEY: zStrVar,
