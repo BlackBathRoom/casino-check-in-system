@@ -1,6 +1,6 @@
 import { Outlet, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { BadgeInfo, CircleX } from 'lucide-react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import useSound from 'use-sound';
 import type { NotificationMessage } from '@backend/services/notificationOrder';
@@ -11,6 +11,7 @@ import Notification from '@/components/ui/Notification';
 import { AdminNotificationProvider } from '@/contexts/adminNotification';
 import { useAuthOptions } from '@/api/routes/auth';
 import { socket } from '@/api/shared/apiClient';
+import { ordersKey } from '@/api/routes/orders/key';
 
 export const Route = createFileRoute('/admin')({
   component: RouteComponent,
@@ -25,6 +26,8 @@ function RouteComponent() {
   >(null);
   const [playStarBucks] = useSound(StarBucksSound, { volume: 1 });
   const [playMacdonald] = useSound(MacdonaldSound, { volume: 0.8 });
+
+  const queryClient = useQueryClient();
 
   if (auth === null) {
     navigate({
@@ -55,6 +58,8 @@ function RouteComponent() {
       } else {
         setTargetPlay('macdonald');
       }
+
+      queryClient.invalidateQueries({ queryKey: ordersKey.lists() });
     });
 
     return () => {
